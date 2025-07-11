@@ -1,3 +1,5 @@
+vim.api.nvim_set_hl(0, "CmpItemKindCopilot", { fg = "#6CC644" })
+
 local cmp = require "cmp"
 
 dofile(vim.g.base46_cache .. "cmp")
@@ -16,6 +18,11 @@ local formatting_style = {
 
   format = function(_, item)
     local icons = require "nvchad.icons.lspkind"
+        or {
+          -- fallback: define your own icons table here if needed
+          Copilot = "",
+          -- ...other kinds
+        }
     local icon = (cmp_ui.icons and icons[item.kind]) or ""
 
     if cmp_style == "atom" or cmp_style == "atom_colored" then
@@ -105,6 +112,7 @@ local options = {
     }),
   },
   sources = {
+    { name = "copilot" },
     { name = "nvim_lsp" },
     { name = "luasnip" },
     { name = "buffer" },

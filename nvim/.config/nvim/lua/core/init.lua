@@ -71,6 +71,9 @@ autocmd("FileType", {
   end,
 })
 
+vim.deprecate = function() end
+
+
 -- reload some chadrc options on-save
 autocmd("BufWritePost", {
   pattern = vim.tbl_map(function(path)
