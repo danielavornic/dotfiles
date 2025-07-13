@@ -1,5 +1,10 @@
 local plugins = {
   {
+    "chentoast/marks.nvim",
+    event = "VeryLazy",
+    opts = {},
+  },
+  {
     "kdheepak/lazygit.nvim",
     cmd = {
       "LazyGit",
