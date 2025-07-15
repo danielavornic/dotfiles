@@ -54,6 +54,11 @@ M.general = {
       end,
       "LSP formatting",
     },
+
+    ["<C-d>"] = { "<C-d>zz", "Scroll down and center" },
+    ["<C-u>"] = { "<C-u>zz", "Scroll up and center" },
+    ["n"] = { "nzzzv", "Go to next result and center" },
+    ["N"] = { "Nzzzv", "Go to previous result and center" },
   },
 
   t = {
