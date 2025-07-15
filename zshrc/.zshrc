@@ -132,4 +132,15 @@ export PATH="$PATH:/opt/nvim/"
 export STARSHIP_CONFIG="$HOME/.config/starship/starship.toml"
 eval "$(starship init zsh)"
 
+alias ls='ls --color=auto'
+
+alias y='yazi'
+
 # [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# bun completions
+[ -s "/home/danielavornic/.bun/_bun" ] && source "/home/danielavornic/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
