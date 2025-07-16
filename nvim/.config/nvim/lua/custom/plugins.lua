@@ -1,5 +1,47 @@
 local plugins = {
   {
+    "ThePrimeagen/harpoon",
+    branch = "harpoon2",
+    lazy = false,
+    dependencies = { "nvim-lua/plenary.nvim" },
+    config = function()
+      local harpoon = require "harpoon"
+
+      -- REQUIRED
+      harpoon:setup()
+      -- REQUIRED
+
+      vim.keymap.set("n", "<leader>s", function()
+        harpoon:list():add()
+      end)
+      vim.keymap.set("n", "<C-e>", function()
+        harpoon.ui:toggle_quick_menu(harpoon:list())
+      end)
+
+      vim.keymap.set("n", "<leader>1", function()
+        harpoon:list():select(1)
+      end)
+      vim.keymap.set("n", "<leader>2", function()
+        harpoon:list():select(2)
+      end)
+      vim.keymap.set("n", "<leader>3", function()
+        harpoon:list():select(3)
+      end)
+      vim.keymap.set("n", "<leader>4", function()
+        harpoon:list():select(4)
+      end)
+
+      -- Toggle previous & next buffers stored within Harpoon list
+      vim.keymap.set("n", "<C-S-P>", function()
+        harpoon:list():prev()
+      end)
+      vim.keymap.set("n", "<C-S-N>", function()
+        harpoon:list():next()
+      end)
+    end,
+  },
+  {
+
     "chentoast/marks.nvim",
     event = "VeryLazy",
     opts = {},
@@ -143,11 +185,6 @@ local plugins = {
     },
   },
   {
-    "karb94/neoscroll.nvim",
-    lazy = false,
-    opts = {},
-  },
-  {
     "mikavilpas/yazi.nvim",
     event = "VeryLazy",
     dependencies = {
@@ -209,14 +246,6 @@ local plugins = {
     lazy = false,
     dependencies = { "nvim-lua/plenary.nvim" },
   },
-  -- {
-  --   "https://github.com/github/copilot.vim",
-  --   lazy = false,
-  --   config = function()
-  --     vim.g.copilot_no_tab_map = true
-  --     vim.api.nvim_set_keymap("i", "<C-]>", "copilot#Accept('<CR>')", { expr = true, silent = true, noremap = true })
-  --   end,
-  -- },
   {
     "abecodes/tabout.nvim",
     event = "InsertCharPre",
@@ -228,15 +257,6 @@ local plugins = {
     config = function()
       require("tabout").setup {}
     end,
-  },
-  {
-    "stevearc/oil.nvim",
-    cmd = "Oil",
-    lazy = false,
-    keys = {
-      { "-", "<cmd>Oil<CR>", desc = "Open Oil file explorer" },
-    },
-    opts = {},
   },
   {
     "neovim/nvim-lspconfig",
