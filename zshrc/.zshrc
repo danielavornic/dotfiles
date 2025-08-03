@@ -146,7 +146,7 @@ export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
 declare -A pomo_options
-pomo_options["work"]="30"
+pomo_options["work"]="45"
 pomo_options["break"]="15"
 
 pomodoro () {
@@ -160,3 +160,9 @@ pomodoro () {
 
 alias wo="pomodoro 'work'"
 alias br="pomodoro 'break'"
+
+export PATH=/home/danielavornic/.opencode/bin:$PATH
+
+
+# Shopify Hydrogen alias to local projects
+alias h2='$(npm prefix -s)/node_modules/.bin/shopify hydrogen'
