@@ -59,6 +59,7 @@ M.general = {
     ["<C-u>"] = { "<C-u>zz", "Scroll up and center" },
     ["n"] = { "nzzzv", "Go to next result and center" },
     ["N"] = { "Nzzzv", "Go to previous result and center" },
+    ["G"] = { "Gzz", "Go to end of file and center" },
   },
 
   t = {
@@ -117,7 +118,7 @@ M.comment = {
   n = {
     ["<leader>/"] = {
       function()
-        require("Comment.api").toggle.linewise.current()
+        require("ts-comments").toggle()
       end,
       "Toggle comment",
     },
@@ -125,7 +126,9 @@ M.comment = {
 
   v = {
     ["<leader>/"] = {
-      "<ESC><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<CR>",
+      function()
+        require("ts-comments").toggle()
+      end,
       "Toggle comment",
     },
   },
