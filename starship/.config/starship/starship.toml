@@ -188,3 +188,9 @@ symbol = " "
 
 [gradle]
 symbol = " "
+
+[custom.timetrace]
+command = """ timetrace status --format "Project: {project} - Worked today: {trackedTimeToday}" """
+when = "timetrace status"
+shell = "sh"
+ignore_timeout = true
