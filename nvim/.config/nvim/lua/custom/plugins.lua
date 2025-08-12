@@ -1,5 +1,88 @@
 local plugins = {
   {
+    "NickvanDyke/opencode.nvim",
+    dependencies = { "folke/snacks.nvim" },
+    ---@type opencode.Config
+    opts = {
+      -- Your configuration, if any
+    },
+    -- stylua: ignore
+    keys = {
+      { '<leader>ot', function() require('opencode').toggle() end,                           desc = 'Toggle embedded opencode', },
+      { '<leader>oa', function() require('opencode').ask() end,                              desc = 'Ask opencode',                 mode = 'n', },
+      { '<leader>oa', function() require('opencode').ask('@selection: ') end,                desc = 'Ask opencode about selection', mode = 'v', },
+      { '<leader>op', function() require('opencode').select_prompt() end,                    desc = 'Select prompt',                mode = { 'n', 'v', }, },
+      { '<leader>on', function() require('opencode').command('session_new') end,             desc = 'New session', },
+      { '<leader>oy', function() require('opencode').command('messages_copy') end,           desc = 'Copy last message', },
+      { '<S-C-u>',    function() require('opencode').command('messages_half_page_up') end,   desc = 'Scroll messages up', },
+      { '<S-C-d>',    function() require('opencode').command('messages_half_page_down') end, desc = 'Scroll messages down', },
+    },
+  },
+  {
+    "nvim-treesitter/nvim-treesitter",
+    dependencies = { "OXY2DEV/markview.nvim" },
+    lazy = false,
+  },
+  require "custom.configs.obsidian",
+  {
+    "folke/zen-mode.nvim",
+    lazy = false,
+    opts = {
+      -- your configuration comes here
+      -- or leave it empty to use the default settings
+      -- refer to the configuration section below
+      window = {
+        width = function()
+          return math.min(160, vim.o.columns * 0.7)
+        end,
+      },
+      plugins = {
+        options = {
+          enabled = true,
+          ruler = false,   -- disables the ruler text in the cmd line area
+          showcmd = false, -- disables the command in the last line of the screen
+          -- you may turn on/off statusline in zen mode by setting 'laststatus'
+          -- statusline will be shown only if 'laststatus' == 3
+          laststatus = 0,          -- turn off the statusline in zen mode
+        },
+        tmux = { enabled = true }, -- disables the tmux statusline
+        gitsigns = { enable = true },
+        -- this will change the font size on kitty when in zen mode
+        -- to make this work, you need to set the following kitty options:
+        -- - allow_remote_control socket-only
+        -- - listen_on unix:/tmp/kitty
+        kitty = {
+          enabled = true,
+          font = "+4", -- font size increment
+        },
+      },
+    },
+  },
+  { "wakatime/vim-wakatime", lazy = false },
+  {
+    "andymass/vim-matchup",
+    init = function()
+      -- modify your configuration vars here
+      vim.g.matchup_treesitter_stopline = 500
+
+      -- or call the setup function provided as a helper. It defines the
+      -- configuration vars for you
+      require("match-up").setup {
+        treesitter = {
+          stopline = 500,
+        },
+      }
+    end,
+    -- or use the `opts` mechanism built into `lazy.nvim`. It calls
+    -- `require('match-up').setup` under the hood
+    ---@type matchup.Config
+    opts = {
+      treesitter = {
+        stopline = 500,
+      },
+    },
+  },
+  {
     "folke/flash.nvim",
     event = "VeryLazy",
     ---@type Flash.Config
