@@ -163,6 +163,9 @@ alias br="pomodoro 'break'"
 
 export PATH=/home/danielavornic/.opencode/bin:$PATH
 
+alias tt='timetrace'
 
-# Shopify Hydrogen alias to local projects
-alias h2='$(npm prefix -s)/node_modules/.bin/shopify hydrogen'
+eval "$(zoxide init zsh)"
+alias cd='z'
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
