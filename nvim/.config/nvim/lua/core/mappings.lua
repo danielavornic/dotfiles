@@ -60,6 +60,24 @@ M.general = {
     ["n"] = { "nzzzv", "Go to next result and center" },
     ["N"] = { "Nzzzv", "Go to previous result and center" },
     ["G"] = { "Gzz", "Go to end of file and center" },
+
+    ["<leader>on"] = {
+      function()
+        vim.cmd("ObsidianTemplate Full Note")
+        -- Wait for template to load, then clean up and enter ZenMode
+        vim.defer_fn(function()
+          pcall(function() vim.cmd([[1,/^\\S/s/^\\n\\{1,}//]]) end)
+          vim.cmd("ZenMode")
+        end, 200)
+      end,
+      "Create Obsidian Full Note and enter ZenMode",
+    },
+    ["<leader>od"] = {
+      ":ObsidianTemplate Daily Note<cr> :lua vim.cmd([[1,/^\\S/s/^\\n\\{1,}//]])<cr>",
+      "Create Obsidian Daily Note",
+    },
+
+    ["<leader>of"] = { ":s/\\(# \\)[^_]*_/\\1/ | s/-/ /g<cr>", "Strip date" },
   },
 
   t = {

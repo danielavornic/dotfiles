@@ -128,6 +128,7 @@ export PATH=$PATH:/home/danielavornic/.spicetify
 export PATH=$PATH:~/.local/bin
 export PATH=$PATH:/usr/local/bin
 export PATH="$PATH:/opt/nvim/"
+export PATH="$PATH:/home/danielavornic/bin"
 
 export STARSHIP_CONFIG="$HOME/.config/starship/starship.toml"
 eval "$(starship init zsh)"
@@ -169,3 +170,5 @@ eval "$(zoxide init zsh)"
 alias cd='z'
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+alias oo="cd ~/DanaGardens"
