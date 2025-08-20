@@ -63,11 +63,13 @@ M.general = {
 
     ["<leader>on"] = {
       function()
-        vim.cmd("ObsidianTemplate Full Note")
+        vim.cmd "ObsidianTemplate Full Note"
         -- Wait for template to load, then clean up and enter ZenMode
         vim.defer_fn(function()
-          pcall(function() vim.cmd([[1,/^\\S/s/^\\n\\{1,}//]]) end)
-          vim.cmd("ZenMode")
+          pcall(function()
+            vim.cmd [[1,/^\\S/s/^\\n\\{1,}//]]
+          end)
+          vim.cmd "ZenMode"
         end, 200)
       end,
       "Create Obsidian Full Note and enter ZenMode",

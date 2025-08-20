@@ -1,27 +1,16 @@
 local plugins = {
   {
-    "NickvanDyke/opencode.nvim",
-    dependencies = { "folke/snacks.nvim" },
-    ---@type opencode.Config
-    opts = {
-      -- Your configuration, if any
+    "sylvanfranklin/omni-preview.nvim",
+    dependencies = {
+      { "chomosuke/typst-preview.nvim", lazy = true },
+      { "hat0uma/csvview.nvim",         lazy = true },
+      { "OXY2DEV/markview.nvim",        lazy = true },
     },
-    -- stylua: ignore
     keys = {
-      { '<leader>ot', function() require('opencode').toggle() end,                           desc = 'Toggle embedded opencode', },
-      { '<leader>oa', function() require('opencode').ask() end,                              desc = 'Ask opencode',                 mode = 'n', },
-      { '<leader>oa', function() require('opencode').ask('@selection: ') end,                desc = 'Ask opencode about selection', mode = 'v', },
-      { '<leader>op', function() require('opencode').select_prompt() end,                    desc = 'Select prompt',                mode = { 'n', 'v', }, },
-      { '<leader>on', function() require('opencode').command('session_new') end,             desc = 'New session', },
-      { '<leader>oy', function() require('opencode').command('messages_copy') end,           desc = 'Copy last message', },
-      { '<S-C-u>',    function() require('opencode').command('messages_half_page_up') end,   desc = 'Scroll messages up', },
-      { '<S-C-d>',    function() require('opencode').command('messages_half_page_down') end, desc = 'Scroll messages down', },
+      { "<leader>po", "<cmd>OmniPreview start<CR>", desc = "OmniPreview Start" },
+      { "<leader>pc", "<cmd>OmniPreview stop<CR>",  desc = "OmniPreview Stop" },
     },
-  },
-  {
-    "nvim-treesitter/nvim-treesitter",
-    dependencies = { "OXY2DEV/markview.nvim" },
-    lazy = false,
+    opts = {},
   },
   require "custom.configs.obsidian",
   {
