@@ -1,10 +1,22 @@
 local plugins = {
   {
+    "nvim-treesitter/nvim-treesitter",
+    opts = function()
+      local opts = require "plugins.configs.treesitter"
+      opts.ensure_installed = {
+        "lua",
+        "javascript",
+        "typescript",
+        "tsx",
+      }
+      return opts
+    end,
+  },
+  {
     "sylvanfranklin/omni-preview.nvim",
     dependencies = {
       { "chomosuke/typst-preview.nvim", lazy = true },
       { "hat0uma/csvview.nvim",         lazy = true },
-      { "OXY2DEV/markview.nvim",        lazy = true },
     },
     keys = {
       { "<leader>po", "<cmd>OmniPreview start<CR>", desc = "OmniPreview Start" },
@@ -13,6 +25,16 @@ local plugins = {
     opts = {},
   },
   require "custom.configs.obsidian",
+  { 
+    "OXY2DEV/markview.nvim", 
+    lazy = false, 
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
+    opts = {
+      experimental = {
+        check_rtp = false
+      }
+    }
+  },
   {
     "folke/zen-mode.nvim",
     lazy = false,
@@ -403,19 +425,6 @@ local plugins = {
     ft = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
     config = function()
       require("nvim-ts-autotag").setup()
-    end,
-  },
-  {
-    "nvim-treesitter/nvim-treesitter",
-    opts = function()
-      local opts = require "plugins.configs.treesitter"
-      opts.ensure_installed = {
-        "lua",
-        "javascript",
-        "typescript",
-        "tsx",
-      }
-      return opts
     end,
   },
 }
