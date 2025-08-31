@@ -1,0 +1,13 @@
+#!/bin/zsh
+
+url=$(git remote get-url origin 2>/dev/null)
+
+if [ -n "$url" ]; then
+    # Convert SSH URL to HTTPS
+    if [[ $url == git@* ]]; then
+        url=$(echo $url | sed 's/git@github.com:/https:\/\/github.com\//' | sed 's/\.git$//')
+    fi
+    xdg-open "$url"
+else
+    echo "No git repository found in current directory: $(pwd)"
+fi
