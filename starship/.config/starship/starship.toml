@@ -194,7 +194,7 @@ command = """
 project=$(timetrace status --format "{project}" 2>/dev/null || echo "---")
 today=$(timetrace status --format "{trackedTimeToday}" 2>/dev/null || echo "---")
 if echo "$project" | grep -q "haven't started tracking"; then
-  echo "$project"
+  echo ""
 elif [ "$project" != "---" ] && [ "$project" != "No project is being tracked" ]; then
   echo "󰈞 $project 󰥔 $today"
 elif [ "$today" != "---" ] && ! echo "$today" | grep -q "haven't started tracking"; then
