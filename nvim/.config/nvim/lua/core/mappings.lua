@@ -35,6 +35,9 @@ M.general = {
     ["<leader>n"] = { "<cmd> set nu! <CR>", "Toggle line number" },
     ["<leader>rn"] = { "<cmd> set rnu! <CR>", "Toggle relative number" },
 
+    -- spell checking
+    ["<leader>sp"] = { "<cmd> set spell! <CR>", "Toggle spell check" },
+
     -- Allow moving the cursor through wrapped lines with j, k, <Up> and <Down>
     -- http://www.reddit.com/r/vim/comments/2k4cbr/problem_with_gj_and_gk/
     -- empty mode is same as using <cmd> :map
@@ -78,10 +81,13 @@ M.general = {
       ":ObsidianTemplate Daily Note<cr> :lua vim.cmd([[1,/^\\S/s/^\\n\\{1,}//]])<cr>",
       "Create Obsidian Daily Note",
     },
+    ["<leader>ot"] = { ":ObsidianTags<cr>", "View Obsidian tags" },
 
     ["<leader>of"] = { ":s/\\(# \\)[^_]*_/\\1/ | s/-/ /g<cr>", "Strip date" },
 
     ["<leader>z"] = { "<cmd> ZenMode <CR>", "Toggle ZenMode" },
+
+    ["<leader>mv"] = { "<cmd> Markview <CR>", "Toggle Markview" },
   },
 
   t = {
@@ -413,11 +419,10 @@ M.telescope = {
 
         local opts = {
           "Convert to PDF (LaTeX engine)",
-          "Convert to PDF (wkhtmltopdf)",
           "Convert to HTML (pandoc)",
           "Convert to DOCX (pandoc)",
           "Live preview in browser",
-          "Preview with glow",
+          "PDF preview (auto-open)",
         }
 
         pickers
@@ -438,19 +443,55 @@ M.telescope = {
                   local cmd
 
                   if choice == "Convert to PDF (LaTeX engine)" then
-                    -- Use LaTeX engine with math support
-                    cmd = "pandoc '" .. file .. "' --pdf-engine=pdflatex --highlight-style=tango -o '" .. basename .. ".pdf'"
-                  elseif choice == "Convert to PDF (wkhtmltopdf)" then
-                    cmd = "pandoc '" .. file .. "' --pdf-engine=wkhtmltopdf -o '" .. basename .. ".pdf'"
+                    -- Use LaTeX engine with math support and Obsidian image conversion
+                    local temp_file = basename .. "_temp.md"
+                    cmd = "sed 's/!\\?\\[\\[\\([^|]*\\)|[0-9]*\\]\\]/![](\\1)/g' '"
+                        .. file
+                        .. "' | sed 's/%20/ /g' > '"
+                        .. temp_file
+                        .. "' && pandoc '"
+                        .. temp_file
+                        .. "' --pdf-engine=pdflatex -V geometry:margin=0.5in --highlight-style=tango -o '"
+                        .. basename
+                        .. ".pdf' && rm '"
+                        .. temp_file
+                        .. "'"
                   elseif choice == "Convert to HTML (pandoc)" then
                     cmd = "pandoc '" .. file .. "' -o '" .. basename .. ".html'"
                   elseif choice == "Convert to DOCX (pandoc)" then
                     cmd = "pandoc '" .. file .. "' -o '" .. basename .. ".docx'"
                   elseif choice == "Live preview in browser" then
-                    -- Using python's built-in markdown server if available, fallback to basic python server
-                    cmd = "python3 -c \"import markdown, http.server, socketserver, webbrowser, os; content=open('" .. file .. "').read(); html='<html><body>' + markdown.markdown(content) + '</body></html>'; open('/tmp/md_preview.html', 'w').write(html); webbrowser.open('file:///tmp/md_preview.html')\""
-                  elseif choice == "Preview with glow" then
-                    cmd = "glow '" .. file .. "'"
+                    -- Start markdown preview server
+                    local port = "8080"
+                    vim.fn.jobstart("grip '" .. file .. "' " .. port .. " --browser", {
+                      detach = true,
+                      on_exit = function(_, code)
+                        if code == 0 then
+                          vim.notify(
+                            "✓ Live preview started at http://localhost:" .. port,
+                            vim.log.levels.INFO,
+                            { title = "Markdown" }
+                          )
+                        else
+                          vim.notify(
+                            "✗ Failed to start preview. Check terminal for errors.",
+                            vim.log.levels.ERROR,
+                            { title = "Markdown" }
+                          )
+                        end
+                      end,
+                    })
+                    return
+                  elseif choice == "PDF preview (auto-open)" then
+                    -- Convert to PDF and open automatically
+                    local pdf_file = basename .. "_preview.pdf"
+                    cmd = "pandoc '"
+                        .. file
+                        .. "' --pdf-engine=pdflatex --highlight-style=tango -o '"
+                        .. pdf_file
+                        .. "' && xdg-open '"
+                        .. pdf_file
+                        .. "'"
                   end
 
                   vim.fn.jobstart(cmd, {
@@ -462,7 +503,11 @@ M.telescope = {
                           { title = "Markdown" }
                         )
                       else
-                        vim.notify("✗ " .. choice .. " failed. Make sure you have the required tools installed (pandoc/glow).", vim.log.levels.ERROR, { title = "Markdown" })
+                        vim.notify(
+                          "✗ " .. choice .. " failed. Make sure you have the required tools installed (pandoc/glow).",
+                          vim.log.levels.ERROR,
+                          { title = "Markdown" }
+                        )
                       end
                     end,
                     on_stderr = function(_, data)

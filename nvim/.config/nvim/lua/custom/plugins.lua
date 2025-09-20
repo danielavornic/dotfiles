@@ -25,15 +25,15 @@ local plugins = {
     opts = {},
   },
   require "custom.configs.obsidian",
-  { 
-    "OXY2DEV/markview.nvim", 
-    lazy = false, 
+  {
+    "OXY2DEV/markview.nvim",
+    lazy = false,
     dependencies = { "nvim-treesitter/nvim-treesitter" },
     opts = {
       experimental = {
-        check_rtp = false
-      }
-    }
+        check_rtp = false,
+      },
+    },
   },
   {
     "folke/zen-mode.nvim",
@@ -91,20 +91,6 @@ local plugins = {
       treesitter = {
         stopline = 500,
       },
-    },
-  },
-  {
-    "folke/flash.nvim",
-    event = "VeryLazy",
-    ---@type Flash.Config
-    opts = {},
-    -- stylua: ignore
-    keys = {
-      { "s",     mode = { "n", "x", "o" }, function() require("flash").jump() end,              desc = "Flash" },
-      { "S",     mode = { "n", "x", "o" }, function() require("flash").treesitter() end,        desc = "Flash Treesitter" },
-      { "r",     mode = "o",               function() require("flash").remote() end,            desc = "Remote Flash" },
-      { "R",     mode = { "o", "x" },      function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
-      { "<c-s>", mode = { "c" },           function() require("flash").toggle() end,            desc = "Toggle Flash Search" },
     },
   },
   {
@@ -408,6 +394,10 @@ local plugins = {
       ensure_installed = {
         "eslint-lsp",
         "prettierd",
+        "pyright", -- Python LSP
+        "black",   -- Python formatter
+        "ruff",    -- Python linter/formatter
+        "isort",   -- Import sorter
         "tailwindcss-language-server",
         "typescript-language-server",
       },
