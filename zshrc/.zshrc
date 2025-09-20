@@ -1,7 +1,9 @@
 export PATH="$HOME/.local/bin:$PATH"
 
 export ZSH="$HOME/.oh-my-zsh"
-plugins=(git zsh-autosuggestions zsh-syntax-highlighting)
+plugins=(git zsh-autosuggestions zsh-syntax-highlighting vi-mode npm-aliases)
+VI_MODE_RESET_PROMPT_ON_MODE_CHANGE=true
+VI_MODE_SET_CURSOR=true
 
 source $ZSH/oh-my-zsh.sh
 
@@ -112,3 +114,10 @@ if command -v theme.sh > /dev/null; then
 fi
 
 alias ls='exa -l --icons --group-directories-first --color=always'
+
+wtf() {
+  local port="${1:-3000}"
+  lsof -i "tcp:$port"
+}
+
+alias killport='f() { sudo kill -9 $(lsof -t -i:"$1"); }; f'
