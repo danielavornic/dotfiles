@@ -33,7 +33,7 @@ opt.numberwidth = 2
 opt.ruler = false
 
 -- disable nvim intro
-opt.shortmess:append "sI"
+-- opt.shortmess:append "sI"
 
 opt.signcolumn = "yes"
 opt.splitbelow = true
@@ -44,6 +44,10 @@ opt.undofile = true
 
 -- interval for writing swap file to disk, also used by gitsigns
 opt.updatetime = 250
+
+-- text formatting
+opt.textwidth = 80
+opt.formatoptions = "tcqj"
 
 -- go to previous/next line with h,l,left arrow and right arrow
 -- when cursor reaches end/beginning of line
@@ -57,7 +61,7 @@ for _, provider in ipairs { "node", "perl", "python3", "ruby" } do
 end
 
 -- add binaries installed by mason.nvim to path
-local is_windows = vim.fn.has("win32") ~= 0
+local is_windows = vim.fn.has "win32" ~= 0
 vim.env.PATH = vim.fn.stdpath "data" .. "/mason/bin" .. (is_windows and ";" or ":") .. vim.env.PATH
 
 -------------------------------------- autocmds ------------------------------------------
@@ -72,7 +76,6 @@ autocmd("FileType", {
 })
 
 vim.deprecate = function() end
-
 
 -- reload some chadrc options on-save
 autocmd("BufWritePost", {
@@ -140,5 +143,5 @@ vim.api.nvim_create_autocmd({ "UIEnter", "BufReadPost", "BufNewFile" }, {
 local new_cmd = vim.api.nvim_create_user_command
 
 new_cmd("NvChadUpdate", function()
-  require "nvchad.updater"()
+  require "nvchad.updater" ()
 end, {})

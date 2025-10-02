@@ -38,6 +38,9 @@ M.general = {
     -- spell checking
     ["<leader>sp"] = { "<cmd> set spell! <CR>", "Toggle spell check" },
 
+    -- toggle wrap
+    ["<leader>tw"] = { "<cmd> set wrap! <CR>", "Toggle wrap" },
+
     -- Allow moving the cursor through wrapped lines with j, k, <Up> and <Down>
     -- http://www.reddit.com/r/vim/comments/2k4cbr/problem_with_gj_and_gk/
     -- empty mode is same as using <cmd> :map
@@ -86,6 +89,35 @@ M.general = {
     ["<leader>of"] = { ":s/\\(# \\)[^_]*_/\\1/ | s/-/ /g<cr>", "Strip date" },
 
     ["<leader>z"] = { "<cmd> ZenMode <CR>", "Toggle ZenMode" },
+
+    ["<leader>tq"] = {
+      function()
+        -- Only works for Typst files
+        if vim.bo.filetype ~= "typst" then
+          vim.notify("This command only works with Typst files (.typ)", vim.log.levels.WARN, { title = "Typst" })
+          return
+        end
+        
+        local file = vim.fn.expand("%:p")
+        local cmd = "prequery " .. vim.fn.shellescape(file)
+        
+        vim.fn.jobstart(cmd, {
+          on_exit = function(_, code)
+            if code == 0 then
+              vim.notify("✓ Prequery completed successfully", vim.log.levels.INFO, { title = "Typst" })
+            else
+              vim.notify("✗ Prequery failed", vim.log.levels.ERROR, { title = "Typst" })
+            end
+          end,
+          on_stderr = function(_, data)
+            if data and #data > 0 and data[1] ~= "" then
+              vim.notify("Error: " .. table.concat(data, "\n"), vim.log.levels.ERROR, { title = "Typst" })
+            end
+          end,
+        })
+      end,
+      "Run prequery on current Typst file",
+    },
 
     ["<leader>mv"] = { "<cmd> Markview <CR>", "Toggle Markview" },
   },
@@ -520,12 +552,19 @@ M.telescope = {
                 return true
               end,
             })
-            :find()
-      end,
-      "Markdown convert options",
-    },
-  },
-}
+             :find()
+       end,
+       "Markdown convert options",
+     },
+
+     ["<leader>ns"] = {
+       function()
+         require("custom.package_scripts").run_script()
+       end,
+       "Run package scripts",
+     },
+   },
+ }
 
 M.nvterm = {
   plugin = true,
