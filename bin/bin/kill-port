@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# Get localhost listening ports with PID and name using netstat
+
+awk_script='NR>2 && $6=="LISTEN" && ($4 ~ /^127\.0\.0\.1:/ || $4 ~ /^0\.0\.0\.0:/ || $4 ~ /^::1:/ || $4 ~ /^:::/) {split($4, addr, ":"); port=addr[length(addr)]; split($7, prog, "/"); pid=prog[1]; name=prog[2]; if (name == "" || name == "-") name="unknown"; if (pid == "-") pid=""; if (port != "") print port, name, pid}'
+
+processes=""
+while IFS=' ' read -r port name pid; do
+    if [[ -n "$pid" ]]; then
+        processes+="$port: $name (PID: $pid)\n"
+    else
+        processes+="$port: $name\n"
+    fi
+done < <(netstat -ltnp 2>/dev/null | awk "$awk_script")
+
+# Use rofi to select a process
+chosen=$(echo -e "$processes" | rofi -dmenu -i -p "󰚌" -theme-str 'window { height: 500px; }')
+
+# Extract PID from selection
+if echo "$chosen" | grep -q "(PID:"; then
+    pid=$(echo "$chosen" | awk '{print $5}')
+else
+    pid=""
+fi
+
+# Kill the selected process if PID is valid
+if [[ -n "$pid" && "$pid" =~ ^[0-9]+$ ]]; then
+    kill "$pid"
+fi

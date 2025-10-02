@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# Get list of processes with PID and command name
+
+
+processes=$(ps -eo pid,comm --no-headers | awk '{print $2 " (PID: " $1 ")"}')
+
+# Use rofi to select a process
+chosen=$(echo "$processes" | rofi -dmenu -i -p "󰚌" -theme-str 'window { height: 600px; }')
+
+# Extract PID from selection
+pid=$(echo "$chosen" | awk '{print $3}')
+
+# Kill the selected process if PID is valid
+if [[ -n "$pid" && "$pid" =~ ^[0-9]+$ ]]; then
+    kill "$pid"
+fi

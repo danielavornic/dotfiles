@@ -1,0 +1,20 @@
+#!/bin/bash
+
+options="Power Off\nRestart\nLog Out\nSleep"
+
+chosen=$(echo -e "$options" | rofi -dmenu -i -p "⏻" -l 4 -theme-str 'window { height: 196px; }')
+
+case $chosen in
+    "Power Off")
+        systemctl poweroff
+        ;;
+    "Restart")
+        systemctl reboot
+        ;;
+    "Log Out")
+        gnome-session-quit --logout --no-prompt
+        ;;
+    "Sleep")
+        systemctl suspend -i
+        ;;
+esac
