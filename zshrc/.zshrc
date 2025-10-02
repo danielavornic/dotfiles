@@ -65,8 +65,8 @@ export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
 declare -A pomo_options
-pomo_options["work"]="45"
-pomo_options["break"]="15"
+pomo_options["work"]="30"
+pomo_options["break"]="5"
 
 pomodoro () {
   if [ -n "$1" -a -n "${pomo_options["$1"]}" ]; then
@@ -113,7 +113,7 @@ if command -v theme.sh > /dev/null; then
 	alias thd='theme.sh --dark -i'
 fi
 
-alias ls='exa -l --icons --group-directories-first --color=always'
+alias ls='eza -l --icons --group-directories-first --color=always'
 
 wtf() {
   local port="${1:-3000}"
@@ -121,3 +121,14 @@ wtf() {
 }
 
 alias killport='f() { sudo kill -9 $(lsof -t -i:"$1"); }; f'
+
+alias fd="fdfind"
+alias cat="batcat"
+
+alias szsh="source ~/dotfiles/zshrc/.zshrc"
+alias telegram='~/Downloads/Telegram/Telegram'
+
+alias oc="opencode"
+
+export PATH=$PATH:~/go/bin
+export PATH=$PATH:/usr/local/go/bin
