@@ -1,0 +1,23 @@
+#!/bin/zsh
+
+HISTORY_FILE="$HOME/.local/share/zathura/history"
+
+if [ ! -f "$HISTORY_FILE" ]; then
+    notify-send "Zathura" "No history file found"
+    exit 1
+fi
+
+files=$(grep -oP '^\[\K[^\]]+' "$HISTORY_FILE" | \
+    grep -v '^[A-Za-z0-9+/=]\{43\}=$' | \
+    tac | \
+    awk '!seen[$0]++')
+
+selected=$(echo "$files" | \
+    sed "s|^$HOME|~|" | \
+    rofi -dmenu -i -p "Open PDF")
+
+selected=$(echo "$selected" | sed "s|^~|$HOME|")
+
+if [ -n "$selected" ]; then
+    zathura "$selected" &
+fi
