@@ -13,20 +13,16 @@ M.general = {
     ["<C-l>"] = { "<Right>", "Move right" },
     ["<C-j>"] = { "<Down>", "Move down" },
     ["<C-k>"] = { "<Up>", "Move up" },
-
-    -- ["<C-]"] = { "<Esc>", "Escape insert mode" },
   },
 
   n = {
     ["<Esc>"] = { "<cmd> noh <CR>", "Clear highlights" },
+
     -- switch between windows
     ["<C-h>"] = { "<C-w>h", "Window left" },
     ["<C-l>"] = { "<C-w>l", "Window right" },
     ["<C-j>"] = { "<C-w>j", "Window down" },
     ["<C-k>"] = { "<C-w>k", "Window up" },
-
-    -- save
-    ["<C-s>"] = { "<cmd> w <CR>", "Save file" },
 
     -- Copy all
     ["<C-c>"] = { "<cmd> %y+ <CR>", "Copy whole file" },
@@ -37,6 +33,9 @@ M.general = {
 
     -- spell checking
     ["<leader>sp"] = { "<cmd> set spell! <CR>", "Toggle spell check" },
+
+    -- open folder
+    ["<C-f>"] = { "<cmd>Open .<CR>", "Open file explorer" },
 
     -- toggle wrap
     ["<leader>tw"] = { "<cmd> set wrap! <CR>", "Toggle wrap" },
@@ -51,7 +50,6 @@ M.general = {
     ["<Down>"] = { 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"', "Move down", opts = { expr = true } },
 
     -- new buffer
-    ["<leader>b"] = { "<cmd> enew <CR>", "New buffer" },
     ["<leader>ch"] = { "<cmd> NvCheatsheet <CR>", "Mapping cheatsheet" },
 
     ["<leader>fm"] = {
@@ -97,10 +95,10 @@ M.general = {
           vim.notify("This command only works with Typst files (.typ)", vim.log.levels.WARN, { title = "Typst" })
           return
         end
-        
-        local file = vim.fn.expand("%:p")
+
+        local file = vim.fn.expand "%:p"
         local cmd = "prequery " .. vim.fn.shellescape(file)
-        
+
         vim.fn.jobstart(cmd, {
           on_exit = function(_, code)
             if code == 0 then
@@ -159,14 +157,6 @@ M.tabufline = {
         require("nvchad.tabufline").tabuflinePrev()
       end,
       "Goto prev buffer",
-    },
-
-    -- close buffer + hide terminal buffer
-    ["<leader>x"] = {
-      function()
-        require("nvchad.tabufline").close_buffer()
-      end,
-      "Close buffer",
     },
   },
 }
@@ -382,55 +372,55 @@ M.telescope = {
         }
 
         pickers
-            .new({}, {
-              prompt_title = "Typst Compile Options",
-              finder = finders.new_table {
-                results = opts,
-              },
-              sorter = conf.generic_sorter {},
-              attach_mappings = function(prompt_bufnr, map)
-                actions.select_default:replace(function()
-                  actions.close(prompt_bufnr)
-                  local selection = action_state.get_selected_entry()
-                  local choice = selection[1]
+          .new({}, {
+            prompt_title = "Typst Compile Options",
+            finder = finders.new_table {
+              results = opts,
+            },
+            sorter = conf.generic_sorter {},
+            attach_mappings = function(prompt_bufnr, map)
+              actions.select_default:replace(function()
+                actions.close(prompt_bufnr)
+                local selection = action_state.get_selected_entry()
+                local choice = selection[1]
 
-                  local file = vim.fn.expand "%:p"
-                  local basename = vim.fn.expand "%:p:r"
-                  local cmd
+                local file = vim.fn.expand "%:p"
+                local basename = vim.fn.expand "%:p:r"
+                local cmd
 
-                  if choice == "Compile to PDF" then
-                    cmd = "typst compile " .. file .. " " .. basename .. ".pdf"
-                  elseif choice == "Compile to PNG" then
-                    cmd = "typst compile " .. file .. " --format png " .. basename .. ".png"
-                  elseif choice == "Compile to SVG" then
-                    cmd = "typst compile " .. file .. " --format svg " .. basename .. ".svg"
-                  elseif choice == "Watch and compile" then
-                    cmd = "typst watch " .. file .. " " .. basename .. ".pdf"
-                  end
+                if choice == "Compile to PDF" then
+                  cmd = "typst compile " .. file .. " " .. basename .. ".pdf"
+                elseif choice == "Compile to PNG" then
+                  cmd = "typst compile " .. file .. " --format png " .. basename .. ".png"
+                elseif choice == "Compile to SVG" then
+                  cmd = "typst compile " .. file .. " --format svg " .. basename .. ".svg"
+                elseif choice == "Watch and compile" then
+                  cmd = "typst watch " .. file .. " " .. basename .. ".pdf"
+                end
 
-                  vim.fn.jobstart(cmd, {
-                    on_exit = function(_, code)
-                      if code == 0 then
-                        vim.notify(
-                          "✓ " .. choice .. " completed successfully",
-                          vim.log.levels.INFO,
-                          { title = "Typst" }
-                        )
-                      else
-                        vim.notify("✗ " .. choice .. " failed", vim.log.levels.ERROR, { title = "Typst" })
-                      end
-                    end,
-                    on_stderr = function(_, data)
-                      if data and #data > 0 and data[1] ~= "" then
-                        vim.notify("Error: " .. table.concat(data, "\n"), vim.log.levels.ERROR, { title = "Typst" })
-                      end
-                    end,
-                  })
-                end)
-                return true
-              end,
-            })
-            :find()
+                vim.fn.jobstart(cmd, {
+                  on_exit = function(_, code)
+                    if code == 0 then
+                      vim.notify(
+                        "✓ " .. choice .. " completed successfully",
+                        vim.log.levels.INFO,
+                        { title = "Typst" }
+                      )
+                    else
+                      vim.notify("✗ " .. choice .. " failed", vim.log.levels.ERROR, { title = "Typst" })
+                    end
+                  end,
+                  on_stderr = function(_, data)
+                    if data and #data > 0 and data[1] ~= "" then
+                      vim.notify("Error: " .. table.concat(data, "\n"), vim.log.levels.ERROR, { title = "Typst" })
+                    end
+                  end,
+                })
+              end)
+              return true
+            end,
+          })
+          :find()
       end,
       "Typst compile options",
     },
@@ -458,113 +448,107 @@ M.telescope = {
         }
 
         pickers
-            .new({}, {
-              prompt_title = "Markdown Convert Options",
-              finder = finders.new_table {
-                results = opts,
-              },
-              sorter = conf.generic_sorter {},
-              attach_mappings = function(prompt_bufnr, map)
-                actions.select_default:replace(function()
-                  actions.close(prompt_bufnr)
-                  local selection = action_state.get_selected_entry()
-                  local choice = selection[1]
+          .new({}, {
+            prompt_title = "Markdown Convert Options",
+            finder = finders.new_table {
+              results = opts,
+            },
+            sorter = conf.generic_sorter {},
+            attach_mappings = function(prompt_bufnr, map)
+              actions.select_default:replace(function()
+                actions.close(prompt_bufnr)
+                local selection = action_state.get_selected_entry()
+                local choice = selection[1]
 
-                  local file = vim.fn.expand "%:p"
-                  local basename = vim.fn.expand "%:p:r"
-                  local cmd
+                local file = vim.fn.expand "%:p"
+                local basename = vim.fn.expand "%:p:r"
+                local cmd
 
-                  if choice == "Convert to PDF (LaTeX engine)" then
-                    -- Use LaTeX engine with math support and Obsidian image conversion
-                    local temp_file = basename .. "_temp.md"
-                    cmd = "sed 's/!\\?\\[\\[\\([^|]*\\)|[0-9]*\\]\\]/![](\\1)/g' '"
-                        .. file
-                        .. "' | sed 's/%20/ /g' > '"
-                        .. temp_file
-                        .. "' && pandoc '"
-                        .. temp_file
-                        .. "' --pdf-engine=pdflatex -V geometry:margin=0.5in --highlight-style=tango -o '"
-                        .. basename
-                        .. ".pdf' && rm '"
-                        .. temp_file
-                        .. "'"
-                  elseif choice == "Convert to HTML (pandoc)" then
-                    cmd = "pandoc '" .. file .. "' -o '" .. basename .. ".html'"
-                  elseif choice == "Convert to DOCX (pandoc)" then
-                    cmd = "pandoc '" .. file .. "' -o '" .. basename .. ".docx'"
-                  elseif choice == "Live preview in browser" then
-                    -- Start markdown preview server
-                    local port = "8080"
-                    vim.fn.jobstart("grip '" .. file .. "' " .. port .. " --browser", {
-                      detach = true,
-                      on_exit = function(_, code)
-                        if code == 0 then
-                          vim.notify(
-                            "✓ Live preview started at http://localhost:" .. port,
-                            vim.log.levels.INFO,
-                            { title = "Markdown" }
-                          )
-                        else
-                          vim.notify(
-                            "✗ Failed to start preview. Check terminal for errors.",
-                            vim.log.levels.ERROR,
-                            { title = "Markdown" }
-                          )
-                        end
-                      end,
-                    })
-                    return
-                  elseif choice == "PDF preview (auto-open)" then
-                    -- Convert to PDF and open automatically
-                    local pdf_file = basename .. "_preview.pdf"
-                    cmd = "pandoc '"
-                        .. file
-                        .. "' --pdf-engine=pdflatex --highlight-style=tango -o '"
-                        .. pdf_file
-                        .. "' && xdg-open '"
-                        .. pdf_file
-                        .. "'"
-                  end
-
-                  vim.fn.jobstart(cmd, {
+                if choice == "Convert to PDF (LaTeX engine)" then
+                  -- Use LaTeX engine with math support and Obsidian image conversion
+                  local temp_file = basename .. "_temp.md"
+                  cmd = "sed 's/!\\?\\[\\[\\([^|]*\\)|[0-9]*\\]\\]/![](\\1)/g' '"
+                    .. file
+                    .. "' | sed 's/%20/ /g' > '"
+                    .. temp_file
+                    .. "' && pandoc '"
+                    .. temp_file
+                    .. "' --pdf-engine=pdflatex -V geometry:margin=0.5in --highlight-style=tango -o '"
+                    .. basename
+                    .. ".pdf' && rm '"
+                    .. temp_file
+                    .. "'"
+                elseif choice == "Convert to HTML (pandoc)" then
+                  cmd = "pandoc '" .. file .. "' -o '" .. basename .. ".html'"
+                elseif choice == "Convert to DOCX (pandoc)" then
+                  cmd = "pandoc '" .. file .. "' -o '" .. basename .. ".docx'"
+                elseif choice == "Live preview in browser" then
+                  -- Start markdown preview server
+                  local port = "8080"
+                  vim.fn.jobstart("grip '" .. file .. "' " .. port .. " --browser", {
+                    detach = true,
                     on_exit = function(_, code)
                       if code == 0 then
                         vim.notify(
-                          "✓ " .. choice .. " completed successfully",
+                          "✓ Live preview started at http://localhost:" .. port,
                           vim.log.levels.INFO,
                           { title = "Markdown" }
                         )
                       else
                         vim.notify(
-                          "✗ " .. choice .. " failed. Make sure you have the required tools installed (pandoc/glow).",
+                          "✗ Failed to start preview. Check terminal for errors.",
                           vim.log.levels.ERROR,
                           { title = "Markdown" }
                         )
                       end
                     end,
-                    on_stderr = function(_, data)
-                      if data and #data > 0 and data[1] ~= "" then
-                        vim.notify("Error: " .. table.concat(data, "\n"), vim.log.levels.ERROR, { title = "Markdown" })
-                      end
-                    end,
                   })
-                end)
-                return true
-              end,
-            })
-             :find()
-       end,
-       "Markdown convert options",
-     },
+                  return
+                elseif choice == "PDF preview (auto-open)" then
+                  -- Convert to PDF and open automatically
+                  local pdf_file = basename .. "_preview.pdf"
+                  cmd = "pandoc '"
+                    .. file
+                    .. "' --pdf-engine=pdflatex --highlight-style=tango -o '"
+                    .. pdf_file
+                    .. "' && xdg-open '"
+                    .. pdf_file
+                    .. "'"
+                end
 
-     ["<leader>ns"] = {
-       function()
-         require("custom.package_scripts").run_script()
-       end,
-       "Run package scripts",
-     },
-   },
- }
+                vim.fn.jobstart(cmd, {
+                  on_exit = function(_, code)
+                    if code == 0 then
+                      vim.notify(
+                        "✓ " .. choice .. " completed successfully",
+                        vim.log.levels.INFO,
+                        { title = "Markdown" }
+                      )
+                    else
+                      vim.notify(
+                        "✗ " .. choice .. " failed. Make sure you have the required tools installed (pandoc/glow).",
+                        vim.log.levels.ERROR,
+                        { title = "Markdown" }
+                      )
+                    end
+                  end,
+                  on_stderr = function(_, data)
+                    if data and #data > 0 and data[1] ~= "" then
+                      vim.notify("Error: " .. table.concat(data, "\n"), vim.log.levels.ERROR, { title = "Markdown" })
+                    end
+                  end,
+                })
+              end)
+              return true
+            end,
+          })
+          :find()
+      end,
+      "Markdown convert options",
+    },
+
+  },
+}
 
 M.nvterm = {
   plugin = true,
