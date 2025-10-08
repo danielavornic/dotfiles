@@ -1,5 +1,50 @@
 local plugins = {
   {
+    "hedyhli/outline.nvim",
+    lazy = false,
+    config = function()
+      -- Example mapping to toggle outline
+      vim.keymap.set("n", "<leader>o", "<cmd>Outline<CR>", { desc = "Toggle Outline" })
+
+      require("outline").setup {
+        -- Your setup opts here (leave empty to use defaults)
+        --
+        symbol_folding = {
+          -- Depth past which nodes will be folded by default. Set to false to unfold all on open.
+          autofold_depth = 4,
+          -- When to auto unfold nodes
+          auto_unfold = {
+            -- Auto unfold currently hovered symbol
+            hovered = true,
+            -- Auto fold when the root level only has this many nodes.
+            -- Set true for 1 node, false for 0.
+            only = true,
+          },
+          markers = { "", "" },
+        },
+      }
+    end,
+  },
+  {
+    "mgierada/lazydocker.nvim",
+    dependencies = { "akinsho/toggleterm.nvim" },
+    config = function()
+      require("lazydocker").setup {
+        border = "curved", -- valid options are "single" | "double" | "shadow" | "curved"
+      }
+    end,
+    event = "BufRead",
+    keys = {
+      {
+        "<leader>ld",
+        function()
+          require("lazydocker").open()
+        end,
+        desc = "Open Lazydocker floating window",
+      },
+    },
+  },
+  {
     "nvim-treesitter/nvim-treesitter",
     opts = function()
       local opts = require "plugins.configs.treesitter"
