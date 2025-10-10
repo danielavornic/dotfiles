@@ -467,13 +467,13 @@ M.telescope = {
                 if choice == "Convert to PDF (LaTeX engine)" then
                   -- Use LaTeX engine with math support and Obsidian image conversion
                   local temp_file = basename .. "_temp.md"
-                  cmd = "sed 's/!\\?\\[\\[\\([^|]*\\)|[0-9]*\\]\\]/![](\\1)/g' '"
+                   cmd = "sed 's/!\\?\\[\\[\\([^|]*\\)|[0-9]*\\]\\]/![](\\1)/g' '"
                     .. file
                     .. "' | sed 's/%20/ /g' > '"
                     .. temp_file
                     .. "' && pandoc '"
                     .. temp_file
-                    .. "' --pdf-engine=pdflatex -V geometry:margin=0.5in --highlight-style=tango -o '"
+                    .. "' --pdf-engine=pdflatex -V geometry:margin=0.5in --highlight-style=tango -V colorlinks=false -o '"
                     .. basename
                     .. ".pdf' && rm '"
                     .. temp_file
@@ -507,9 +507,9 @@ M.telescope = {
                 elseif choice == "PDF preview (auto-open)" then
                   -- Convert to PDF and open automatically
                   local pdf_file = basename .. "_preview.pdf"
-                  cmd = "pandoc '"
+                   cmd = "pandoc '"
                     .. file
-                    .. "' --pdf-engine=pdflatex --highlight-style=tango -o '"
+                    .. "' --pdf-engine=pdflatex --highlight-style=tango -V colorlinks=false -o '"
                     .. pdf_file
                     .. "' && xdg-open '"
                     .. pdf_file

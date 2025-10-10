@@ -11,7 +11,7 @@ local plugins = {
         --
         symbol_folding = {
           -- Depth past which nodes will be folded by default. Set to false to unfold all on open.
-          autofold_depth = 4,
+          autofold_depth = 3,
           -- When to auto unfold nodes
           auto_unfold = {
             -- Auto unfold currently hovered symbol
@@ -28,11 +28,7 @@ local plugins = {
   {
     "mgierada/lazydocker.nvim",
     dependencies = { "akinsho/toggleterm.nvim" },
-    config = function()
-      require("lazydocker").setup {
-        border = "curved", -- valid options are "single" | "double" | "shadow" | "curved"
-      }
-    end,
+    config = require "custom.configs.lazydocker",
     event = "BufRead",
     keys = {
       {
@@ -83,64 +79,11 @@ local plugins = {
   {
     "folke/zen-mode.nvim",
     lazy = false,
-    opts = {
-      -- your configuration comes here
-      -- or leave it empty to use the default settings
-      -- refer to the configuration section below
-      window = {
-        width = function()
-          return math.min(160, vim.o.columns * 0.7)
-        end,
-      },
-      plugins = {
-        options = {
-          enabled = true,
-          ruler = false,   -- disables the ruler text in the cmd line area
-          showcmd = false, -- disables the command in the last line of the screen
-          -- you may turn on/off statusline in zen mode by setting 'laststatus'
-          -- statusline will be shown only if 'laststatus' == 3
-          laststatus = 0,          -- turn off the statusline in zen mode
-        },
-        tmux = { enabled = true }, -- disables the tmux statusline
-        gitsigns = { enable = true },
-        -- this will change the font size on kitty when in zen mode
-        -- to make this work, you need to set the following kitty options:
-        -- - allow_remote_control socket-only
-        -- - listen_on unix:/tmp/kitty
-        kitty = {
-          enabled = true,
-          font = "+4", -- font size increment
-        },
-      },
-    },
+    opts = require "custom.configs.zen-mode",
   },
-  { "wakatime/vim-wakatime", lazy = false },
   {
     "andymass/vim-matchup",
-    init = function()
-      -- modify your configuration vars here
-      vim.g.matchup_treesitter_stopline = 500
-
-      -- or call the setup function provided as a helper. It defines the
-      -- configuration vars for you
-      require("match-up").setup {
-        treesitter = {
-          stopline = 500,
-        },
-      }
-    end,
-    -- or use the `opts` mechanism built into `lazy.nvim`. It calls
-    -- `require('match-up').setup` under the hood
-    ---@type matchup.Config
-    opts = {
-      treesitter = {
-        stopline = 500,
-      },
-    },
-  },
-  {
-    "numToStr/Comment.nvim",
-    enabled = false,
+    init = require "custom.configs.matchup",
   },
   {
     "folke/ts-comments.nvim",
@@ -172,44 +115,9 @@ local plugins = {
     branch = "harpoon2",
     lazy = false,
     dependencies = { "nvim-lua/plenary.nvim" },
-    config = function()
-      local harpoon = require "harpoon"
-
-      -- REQUIRED
-      harpoon:setup()
-      -- REQUIRED
-
-      vim.keymap.set("n", "<leader>s", function()
-        harpoon:list():add()
-      end)
-      vim.keymap.set("n", "<C-e>", function()
-        harpoon.ui:toggle_quick_menu(harpoon:list())
-      end)
-
-      vim.keymap.set("n", "<leader>1", function()
-        harpoon:list():select(1)
-      end)
-      vim.keymap.set("n", "<leader>2", function()
-        harpoon:list():select(2)
-      end)
-      vim.keymap.set("n", "<leader>3", function()
-        harpoon:list():select(3)
-      end)
-      vim.keymap.set("n", "<leader>4", function()
-        harpoon:list():select(4)
-      end)
-
-      -- Toggle previous & next buffers stored within Harpoon list
-      vim.keymap.set("n", "<C-S-P>", function()
-        harpoon:list():prev()
-      end)
-      vim.keymap.set("n", "<C-S-N>", function()
-        harpoon:list():next()
-      end)
-    end,
+    config = require "custom.configs.harpoon",
   },
   {
-
     "chentoast/marks.nvim",
     event = "VeryLazy",
     opts = {},
@@ -265,54 +173,7 @@ local plugins = {
     cmd = "Copilot",
     event = "InsertEnter",
     config = function()
-      require("copilot").setup {
-        suggestion = { enabled = false },
-        panel = { enabled = false },
-        filetypes = {
-          yaml = false,
-          markdown = false,
-          help = false,
-          gitcommit = false,
-          gitrebase = false,
-          hgcommit = false,
-          svn = false,
-          cvs = false,
-          ["."] = false,
-        },
-        auth_provider_url = "https://github.com", -- URL to authentication provider, if not "https://github.com/"
-        logger = {
-          file = vim.fn.stdpath "log" .. "/copilot-lua.log",
-          file_log_level = vim.log.levels.OFF,
-          print_log_level = vim.log.levels.WARN,
-          trace_lsp = "off", -- "off" | "messages" | "verbose"
-          trace_lsp_progress = false,
-          log_lsp_messages = false,
-        },
-        copilot_node_command = "node", -- Node.js version must be > 20
-        -- workspace_folders = {},
-        -- copilot_model = "",
-        root_dir = function()
-          return vim.fs.dirname(vim.fs.find(".git", { upward = true })[1])
-        end,
-        -- should_attach = function(_, _)
-        --   if not vim.bo.buflisted then
-        --     logger.debug "not attaching, buffer is not 'buflisted'"
-        --     return false
-        --   end
-        --
-        --   if vim.bo.buftype ~= "" then
-        --     logger.debug("not attaching, buffer 'buftype' is " .. vim.bo.buftype)
-        --     return false
-        --   end
-        --
-        --   return true
-        -- end,
-        server = {
-          type = "nodejs", -- "nodejs" | "binary"
-          custom_server_filepath = nil,
-        },
-        server_opts_overrides = {},
-      }
+      require("copilot").setup(require "custom.configs.copilot")
     end,
   },
   {
@@ -377,19 +238,8 @@ local plugins = {
         desc = "Resume the last yazi session",
       },
     },
-    opts = {
-      -- if you want to open yazi instead of netrw, see below for more info
-      open_for_directories = false,
-      keymaps = {
-        show_help = "<f1>",
-      },
-    },
-    -- 👇 if you use `open_for_directories=true`, this is recommended
-    init = function()
-      -- More details: https://github.com/mikavilpas/yazi.nvim/issues/802
-      -- vim.g.loaded_netrw = 1
-      vim.g.loaded_netrwPlugin = 1
-    end,
+    opts = require("custom.configs.yazi").opts,
+    init = require("custom.configs.yazi").init,
   },
   {
     "szymonwilczek/vim-be-better",
@@ -413,6 +263,22 @@ local plugins = {
     "folke/todo-comments.nvim",
     lazy = false,
     dependencies = { "nvim-lua/plenary.nvim" },
+    opts = {
+      keywords = {
+        FIX = {
+          icon = " ", -- icon used for the sign, and in search results
+          color = "error", -- can be a hex color, or a named color (see below)
+          alt = { "FIXME", "BUG", "FIXIT", "ISSUE" }, -- a set of other keywords that all map to this FIX keywords
+          -- signs = false, -- configure signs for some keywords individually
+        },
+        TODO = { icon = " ", color = "info" },
+        HACK = { icon = " ", color = "warning" },
+        WARN = { icon = " ", color = "warning", alt = { "WARNING", "XXX" } },
+        PERF = { icon = " ", alt = { "OPTIM", "PERFORMANCE", "OPTIMIZE" } },
+        NOTE = { icon = " ", color = "hint", alt = { "INFO" } },
+        TEST = { icon = "⏲ ", color = "test", alt = { "TESTING", "PASSED", "FAILED" } },
+      },
+    },
   },
   {
     "abecodes/tabout.nvim",
