@@ -1,20 +1,20 @@
 local options = {
-  pickers = {
-    find_files = {
-      hidden = true,
-    },
-  },
+   pickers = {
+     find_files = {
+       hidden = true,
+     },
+   },
   defaults = {
-    vimgrep_arguments = {
-      "rg",
-      "-L",
-      "--color=never",
-      "--no-heading",
-      "--with-filename",
-      "--line-number",
-      "--column",
-      "--smart-case",
-    },
+     vimgrep_arguments = {
+       "rg",
+       "-L",
+       "--color=never",
+       "--no-heading",
+       "--with-filename",
+       "--line-number",
+       "--column",
+       "--smart-case",
+     },
     prompt_prefix = "   ",
     selection_caret = "  ",
     entry_prefix = "  ",
@@ -35,7 +35,7 @@ local options = {
       preview_cutoff = 120,
     },
     file_sorter = require("telescope.sorters").get_fuzzy_file,
-    file_ignore_patterns = { "node_modules", ".git" },
+    file_ignore_patterns = { "node_modules", ".git/" },
     generic_sorter = require("telescope.sorters").get_generic_fuzzy_sorter,
     path_display = { "truncate" },
     winblend = 0,
