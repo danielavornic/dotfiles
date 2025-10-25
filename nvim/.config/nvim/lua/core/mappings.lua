@@ -118,6 +118,8 @@ M.general = {
     },
 
     ["<leader>mv"] = { "<cmd> Markview <CR>", "Toggle Markview" },
+
+    ["<leader>nh"] = { "<cmd>Noice dismiss<CR>", "Dismiss noice notification" },
   },
 
   t = {
@@ -337,6 +339,15 @@ M.telescope = {
     ["<leader>fh"] = { "<cmd> Telescope help_tags <CR>", "Help page" },
     ["<leader>fo"] = { "<cmd> Telescope oldfiles <CR>", "Find oldfiles" },
     ["<leader>fz"] = { "<cmd> Telescope current_buffer_fuzzy_find <CR>", "Find in current buffer" },
+    ["<leader>fg"] = {
+      function()
+        require("telescope.builtin").find_files({
+          cwd = vim.fn.expand("~/DanaGardens"),
+          file_ignore_patterns = { "**/_attachments/**", "**/.obsidian/**" }
+        })
+      end,
+      "Find files in DanaGardens",
+    },
 
     -- git
     ["<leader>cm"] = { "<cmd> Telescope git_commits <CR>", "Git commits" },
