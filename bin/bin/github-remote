@@ -1,13 +1,15 @@
-#!/bin/zsh
+#!/usr/bin/env bash
 
-url=$(git remote get-url origin 2>/dev/null)
+cd $(tmux display-message -p '#{pane_current_path}')
+url=$(git remote get-url origin) 
 
-if [ -n "$url" ]; then
-    # Convert SSH URL to HTTPS
+if [[ $url == *github.com* ]]; then
     if [[ $url == git@* ]]; then
-        url=$(echo $url | sed 's/git@github.com:/https:\/\/github.com\//' | sed 's/\.git$//')
+        url="${url#git@}"
+        url="${url/:/\/}" 
+        url="https://$url"
     fi
     xdg-open "$url"
 else
-    echo "No git repository found in current directory: $(pwd)"
+    echo "This repository is not hosted on GitHub"
 fi
