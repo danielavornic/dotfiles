@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Prompt for title
-read -p "Fleeting note title: " title
+read -p "Note title: " title
 
 # Exit if no title
 if [ -z "$title" ]; then
@@ -9,28 +9,25 @@ if [ -z "$title" ]; then
   exit 1
 fi
 
-# Generate filename: YYYY-MM-DD-HHMM-title.md
-date_str=$(date +%Y-%m-%d)
-time_str=$(date +%H%M)
 # Slugify title: lowercase, replace spaces and special chars with -
 slug_title=$(echo "$title" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9]/-/g' | sed 's/--*/-/g' | sed 's/^-//' | sed 's/-$//')
-filename="${date_str}-${time_str}-${slug_title}.md"
+filename="$${slug_title}.md"
 
 # Path to new file
 vault_path="/home/danielavornic/DanaGardens"
-notes_dir="$vault_path/musings"
+notes_dir="$vault_path/00-INBOX"
 filepath="$notes_dir/$filename"
 
 # Ensure musings dir exists
 mkdir -p "$notes_dir"
 
 # Copy template and replace placeholders
-template="$vault_path/_templates/Fleeting.md"
+template="$vault_path/_SYSTEM/_templates/INBOX-Template.md"
 cp "$template" "$filepath"
 
 # Replace {date} with current date
 current_date=$(date +%Y-%m-%d)
-sed -i "s/{date}/$current_date/g" "$filepath"
+sed -i "s/{{date}}/$current_date/g" "$filepath"
 
 # Replace {{title}} with the provided title
 sed -i "s/{{title}}/$title/g" "$filepath"

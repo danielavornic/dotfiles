@@ -1,12 +1,101 @@
 #!/bin/zsh
 
 if [ -z "$1" ]; then
-  echo "Error: A file name must be set, e.g. on \"the wonderful thing about tiggers\"."
+  echo "Usage: newnote <title> [type]"
+  echo ""
+  echo "Types:"
+  echo "  permanent    - Knowledge base (20-PERMANENT-NOTES/) [default]"
+  echo "  personal     - Personal reflection (10-PERSONAL/reflections/)"
+  echo "  daily        - Daily note (10-PERSONAL/daily/)"
+  echo "  relationship - Relationship/Andi (10-PERSONAL/relationship/)"
+  echo "  source       - Reference material (40-SOURCE-MATERIAL/)"
+  echo "  fleeting     - Temporary (50-FLEETING/)"
+  echo "  inbox        - Quick capture (00-INBOX/)"
   exit 1
 fi
 
-file_name=$(echo "$1" | tr ' ' '-')
-formatted_file_name=$(date "+%Y-%m-%d")_${file_name}.md
-cd "/home/danielavornic/DanaGardens/" || exit
-touch "musings/${formatted_file_name}"
-nvim "musings/${formatted_file_name}"
+title="$1"
+note_type="${2:-permanent}"
+date_stamp=$(date "+%Y-%m-%d")
+file_name=$(echo "$title" | tr ' ' '-')
+
+# Determine folder and filename format based on type
+case "$note_type" in
+  permanent)
+    formatted_file_name="${file_name}.md"
+    folder="20-PERMANENT-NOTES"
+    template="PERMANENT-NOTE-Template.md"
+    ;;
+  personal)
+    formatted_file_name="${date_stamp}-${file_name}.md"
+    folder="10-PERSONAL/reflections"
+    template="PERSONAL-NOTE-Template.md"
+    ;;
+  daily)
+    formatted_file_name="${date_stamp}.md"  # Just date for daily
+    folder="10-PERSONAL/daily"
+    template="PERSONAL-NOTE-Template.md"
+    ;;
+  relationship)
+    formatted_file_name="${date_stamp}-${file_name}.md"
+    folder="10-PERSONAL/relationship"
+    template="PERSONAL-NOTE-Template.md"
+    ;;
+  source)
+    formatted_file_name="${file_name}.md"
+    folder="40-SOURCE-MATERIAL/articles"
+    template="SOURCE-MATERIAL-Template.md"
+    ;;
+  fleeting)
+    formatted_file_name="${date_stamp}-${file_name}.md"
+    folder="50-FLEETING"
+    template="PERMANENT-NOTE-Template.md"
+    ;;
+  inbox)
+    formatted_file_name="${file_name}.md"
+    folder="00-INBOX"
+    template="INBOX-Template.md"
+    ;;
+  *)
+    echo "❌ Unknown type: $note_type"
+    echo "Valid types: permanent, personal, daily, relationship, source, fleeting, inbox"
+    exit 1
+    ;;
+esac
+
+vault_root="/home/danielavornic/DanaGardens"
+file_path="${vault_root}/${folder}/${formatted_file_name}"
+
+# Check if file already exists
+if [ -f "$file_path" ]; then
+  echo "⚠️  File already exists: $file_path"
+  read -q "REPLY?Open it anyway? (y/n) "
+  if [ "$REPLY" != "y" ]; then
+    exit 0
+  fi
+else
+  # Create file from template if it doesn't exist
+  template_path="${vault_root}/_SYSTEM/_templates/${template}"
+
+  if [ -f "$template_path" ]; then
+    cp "$template_path" "$file_path"
+    # Replace placeholders in template
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+      # macOS
+      sed -i '' "s/\[Title\]/${title}/g" "$file_path"
+      sed -i '' "s/\[Date or title\]/${title}/g" "$file_path"
+    else
+      # Linux
+      sed -i "s/\[Title\]/${title}/g" "$file_path"
+      sed -i "s/\[Date or title\]/${title}/g" "$file_path"
+    fi
+  else
+    # Fallback: create empty file with basic frontmatter
+    touch "$file_path"
+    echo "⚠️  Template not found at $template_path"
+  fi
+fi
+
+# Open in nvim
+cd "$vault_root" || exit
+nvim "$file_path"
