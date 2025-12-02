@@ -22,7 +22,7 @@ return {
       -- The default folder to place images in via `:ObsidianPasteImg`.
       -- If this is a relative path it will be interpreted as relative to the vault root.
       -- You can always override this per image by passing a full path to the command instead of just a filename.
-      img_folder = "_attachments", -- This is the default
+      img_folder = "_SYSTEM/_attachments", -- This is the default
 
       -- Optional, customize the default name or prefix when pasting images via `:ObsidianPasteImg`.
       ---@return string
@@ -48,12 +48,12 @@ return {
         path = "~/DanaGardens",
       },
     },
-    notes_subdir = "musings",
-    new_notes_location = "musings",
+    notes_subdir = "00-INBOX",
+    new_notes_location = "00-INBOX",
 
     disable_frontmatter = true,
     templates = {
-      subdir = "_templates",
+      subdir = "_SYSTEM/_templates",
       date_format = "%d-%m-%Y",
       time_format = "%H:%M:%S",
     },
@@ -76,5 +76,17 @@ return {
       vim.fn.jobstart { "xdg-open", img } -- linux
       -- vim.cmd(':silent exec "!start ' .. url .. '"') -- Windows
     end,
+    daily_notes = {
+      -- Optional, if you keep daily notes in a separate directory.
+      folder = "10-PERSONAL/daily",
+      -- Optional, if you want to change the date format for the ID of daily notes.
+      date_format = "%d-%m-%Y",
+      -- Optional, if you want to change the date format of the default alias of daily notes.
+      alias_format = "%-d %B,  %Y",
+      -- Optional, default tags to add to each new daily note created.
+      default_tags = { "dpn" },
+      -- Optional, if you want to automatically insert a template from your template directory like 'daily.md'
+      template = "_SYSTEM/_templates/DAILY-Template.md",
+    },
   },
 }

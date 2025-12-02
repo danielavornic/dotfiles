@@ -2,6 +2,34 @@ vim.api.nvim_set_hl(0, "CmpItemKindCopilot", { fg = "#6CC644" })
 
 local cmp = require "cmp"
 
+-- Copilot toggle state
+local _copilot_enabled = true
+
+-- Function to get sources based on copilot state
+local function get_sources()
+  local sources = {
+    { name = "nvim_lsp" },
+    { name = "luasnip" },
+    { name = "buffer" },
+    { name = "nvim_lua" },
+    { name = "path" },
+  }
+
+  if _copilot_enabled then
+    table.insert(sources, 1, { name = "copilot" })
+  end
+
+  return sources
+end
+
+-- Function to toggle copilot
+function _G.toggle_copilot()
+  _copilot_enabled = not _copilot_enabled
+  cmp.setup.buffer { sources = get_sources() }
+  local status = _copilot_enabled and "enabled" or "disabled"
+  vim.notify("Copilot " .. status, vim.log.levels.INFO, { title = "Copilot" })
+end
+
 dofile(vim.g.base46_cache .. "cmp")
 
 local cmp_ui = require("core.utils").load_config().ui.cmp
@@ -111,22 +139,7 @@ local options = {
       "s",
     }),
   },
-  sources = {
-    { name = "copilot" },
-    { name = "nvim_lsp" },
-    { name = "luasnip" },
-    { name = "buffer" },
-    { name = "nvim_lua" },
-    { name = "path" },
-    {
-      name = "nvim_lsp",
-      option = {
-        markdown_oxide = {
-          keyword_pattern = [[\(\k\| \|\/\|#\)\+]],
-        },
-      },
-    },
-  },
+  sources = get_sources(),
 }
 
 if cmp_style ~= "atom" and cmp_style ~= "atom_colored" then

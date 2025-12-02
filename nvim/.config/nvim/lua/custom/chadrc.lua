@@ -1,7 +1,7 @@
 ---@type ChadrcConfig
 local M = {}
 M.ui = {
-  theme = "everforest",
+  theme = "kanagawa",
   tabufline = { enabled = false },
   hl_override = {
     -- General syntax italics

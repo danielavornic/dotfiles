@@ -1,5 +1,48 @@
 local plugins = {
   {
+    "nvim-treesitter/nvim-treesitter",
+    opts = function()
+      local opts = require "plugins.configs.treesitter"
+      opts.ensure_installed = {
+        "lua",
+        "javascript",
+        "typescript",
+        "tsx",
+        "svelte",
+      }
+      return opts
+    end,
+  },
+  {
+    "nvim-neotest/neotest",
+    lazy = false,
+    dependencies = {
+      "nvim-neotest/nvim-nio",
+      "nvim-lua/plenary.nvim",
+      "antoinemadec/FixCursorHold.nvim",
+      "nvim-treesitter/nvim-treesitter",
+      "marilari88/neotest-vitest",
+      "nvim-neotest/neotest-jest",
+    },
+    keys = {
+      { "<leader>tr", "<cmd>Neotest run<cr>",      desc = "run nearest test" },
+      { "<leader>tl", "<cmd>Neotest run last<cr>", desc = "run last test" },
+      { "<leader>tf", "<cmd>Neotest run file<cr>", desc = "run test file" },
+    },
+    config = require "custom.configs.neotest",
+  },
+  {
+    "maarutan/macro-notify.nvim",
+    config = function()
+      require("macro-notify").setup {
+        message_start = "Macro started on register: ",
+        message_end = "Macro ended on register: ",
+        icon_start = "📼",
+        icon_end = "✅",
+      }
+    end,
+  },
+  {
     "hedyhli/outline.nvim",
     lazy = false,
     config = function()
@@ -39,19 +82,6 @@ local plugins = {
         desc = "Open Lazydocker floating window",
       },
     },
-  },
-  {
-    "nvim-treesitter/nvim-treesitter",
-    opts = function()
-      local opts = require "plugins.configs.treesitter"
-      opts.ensure_installed = {
-        "lua",
-        "javascript",
-        "typescript",
-        "tsx",
-      }
-      return opts
-    end,
   },
   {
     "sylvanfranklin/omni-preview.nvim",
@@ -140,6 +170,11 @@ local plugins = {
     keys = {
       { "<leader>lg", "<cmd>LazyGit<cr>", desc = "LazyGit" },
     },
+    config = function()
+      require("lazygit").setup {
+        editor_action_callback = require "custom.configs.lazygit",
+      }
+    end,
   },
   {
     "MunifTanjim/nui.nvim",
@@ -311,6 +346,7 @@ local plugins = {
         "isort",   -- Import sorter
         "tailwindcss-language-server",
         "typescript-language-server",
+        "svelte-language-server",
       },
     },
   },
@@ -323,7 +359,7 @@ local plugins = {
   },
   {
     "windwp/nvim-ts-autotag",
-    ft = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
+    ft = { "javascript", "javascriptreact", "typescript", "typescriptreact", "svelte" },
     config = function()
       require("nvim-ts-autotag").setup()
     end,

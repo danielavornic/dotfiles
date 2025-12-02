@@ -22,6 +22,10 @@ end
 
 M.capabilities = vim.lsp.protocol.make_client_capabilities()
 
+M.capabilities.general = {
+  positionEncodings = { "utf-8", "utf-16" },
+}
+
 M.capabilities.textDocument.completion.completionItem = {
   documentationFormat = { "markdown", "plaintext" },
   snippetSupport = true,
