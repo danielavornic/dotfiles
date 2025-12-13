@@ -54,10 +54,38 @@ on-mode-changed = []
 
 [[on-window-detected]]
 if.app-id = "com.apple.finder"
-run = [ 'layout floating' ]
+run = 'layout floating'
 
 [[on-window-detected]]
 if.app-name-regex-substring = 'camera'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.Music'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.cron.electron'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'ru.keepcoder.Telegram'
+run = 'move-node-to-workspace 4'
+
+[[on-window-detected]]
+if.app-id = 'com.hnc.Discord'
+run = 'move-node-to-workspace 4'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.Preview'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'app.zen-browser.zen'
+run = 'move-node-to-workspace 1'
+
+[[on-window-detected]]
+if.app-id = 'fm.last.batch-scrobbler'
 run = 'layout floating'
 
 # Possible values: (qwerty|dvorak|colemak)
@@ -114,28 +142,31 @@ run = 'layout floating'
     # end tell'
     # '''
 
+    # Open Finder in current workspace
+    alt-f = 'exec-and-forget /Users/danielavornic/dotfiles/bin/open-finder-current-workspace'
+
     # Disable alphabet workspace switching (only use numbered workspaces)
-    alt-a = []
-    alt-b = []
-    alt-c = []
-    alt-d = []
-    alt-e = []
-    alt-f = []
-    alt-g = []
-    alt-i = []
-    alt-m = []
-    alt-o = []
-    alt-p = []
-    alt-q = []
-    alt-r = []
-    alt-s = []
-    alt-t = []
-    alt-u = []
-    alt-v = []
-    alt-w = []
-    alt-x = []
-    alt-y = []
-    alt-z = []
+    # alt-a = []
+    # alt-b = []
+    # alt-c = []
+    # alt-d = []
+    # alt-e = []
+    # alt-f = []
+    # alt-g = []
+    # alt-i = []
+    # alt-m = []
+    # alt-o = []
+    # alt-p = []
+    # alt-q = []
+    # alt-r = []
+    # alt-s = []
+    # alt-t = []
+    # alt-u = []
+    # alt-v = []
+    # alt-w = []
+    # alt-x = []
+    # alt-y = []
+    # alt-z = []
 
     # See: https://nikitabobko.github.io/AeroSpace/commands#layout
     alt-slash = 'layout tiles horizontal vertical'
