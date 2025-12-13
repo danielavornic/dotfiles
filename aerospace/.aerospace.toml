@@ -143,7 +143,6 @@ run = 'layout floating'
     # '''
 
     # Open Finder in current workspace
-    alt-f = 'exec-and-forget /Users/danielavornic/dotfiles/bin/open-finder-current-workspace'
 
     # Disable alphabet workspace switching (only use numbered workspaces)
     # alt-a = []
