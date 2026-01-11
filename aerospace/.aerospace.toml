@@ -52,9 +52,9 @@ persistent-workspaces = ["1", "2", "3", "4", "5", "6"]
 # See: https://nikitabobko.github.io/AeroSpace/commands#mode
 on-mode-changed = []
 
-[[on-window-detected]]
-if.app-id = "com.apple.finder"
-run = 'layout floating'
+# [[on-window-detected]]
+# if.app-id = "com.apple.finder"
+# run = 'layout floating'
 
 [[on-window-detected]]
 if.app-name-regex-substring = 'camera'
@@ -62,10 +62,6 @@ run = 'layout floating'
 
 [[on-window-detected]]
 if.app-id = 'com.apple.Music'
-run = 'layout floating'
-
-[[on-window-detected]]
-if.app-id = 'com.cron.electron'
 run = 'layout floating'
 
 [[on-window-detected]]
@@ -81,12 +77,20 @@ if.app-id = 'com.apple.Preview'
 run = 'layout floating'
 
 [[on-window-detected]]
-if.app-id = 'app.zen-browser.zen'
-run = 'move-node-to-workspace 1'
+if.app-id = 'com.apple.Stickies'
+run = 'layout floating'
 
 [[on-window-detected]]
 if.app-id = 'fm.last.batch-scrobbler'
 run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'coing.ClockifyDesktop'
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'app.zen-browser.zen'
+run = 'move-node-to-workspace 1'
 
 # Possible values: (qwerty|dvorak|colemak)
 # See https://nikitabobko.github.io/AeroSpace/guide#key-mapping
