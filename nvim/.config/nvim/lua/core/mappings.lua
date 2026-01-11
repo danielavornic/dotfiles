@@ -70,7 +70,7 @@ M.general = {
         local yanked_text = vim.fn.getreg "0"
         yanked_text = yanked_text:gsub("\n$", "")
         yanked_text = yanked_text:gsub("^%s+", "")
-        vim.api.nvim_put({yanked_text}, 'c', true, true)
+        vim.api.nvim_put({ yanked_text }, "c", true, true)
       end,
       "Paste cleaned yanked text",
     },
@@ -179,6 +179,27 @@ M.general = {
         _G.toggle_copilot()
       end,
       "Toggle copilot completion",
+    },
+
+    ["<leader>fr"] = {
+      function()
+        -- Only works for Typst files
+        if vim.bo.filetype ~= "typst" then
+          vim.notify("This command only works with Typst files (.typ)", vim.log.levels.WARN, { title = "Typst" })
+          return
+        end
+
+        local pdf_path = vim.fn.expand "%:p:r" .. ".pdf"
+        vim.fn.jobstart("zathura --fork " .. vim.fn.shellescape(pdf_path) .. " &", {
+          detach = true,
+          on_exit = function(_, code)
+            if code ~= 0 then
+              vim.notify("Failed to open PDF with zathura", vim.log.levels.ERROR, { title = "Typst" })
+            end
+          end,
+        })
+      end,
+      "Open Typst PDF with zathura",
     },
   },
 
