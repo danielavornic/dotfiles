@@ -1,0 +1,4 @@
+set selection-clipboard clipboard
+
+set scroll-full-overlap 0.01
+set scroll-step 3
