@@ -9,6 +9,8 @@ local plugins = {
         "typescript",
         "tsx",
         "svelte",
+        "markdown",
+        "markdown_inline",
       }
       return opts
     end,
@@ -100,11 +102,7 @@ local plugins = {
     "OXY2DEV/markview.nvim",
     lazy = false,
     dependencies = { "nvim-treesitter/nvim-treesitter" },
-    opts = {
-      experimental = {
-        check_rtp = false,
-      },
-    },
+    opts = require "custom.configs.markview",
   },
   {
     "folke/zen-mode.nvim",
