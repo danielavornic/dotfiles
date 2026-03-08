@@ -181,6 +181,46 @@ M.general = {
       "Toggle copilot completion",
     },
 
+    ["<leader>hg"] = {
+      function()
+        local on_attach = require("plugins.configs.lspconfig").on_attach
+        local capabilities = require("plugins.configs.lspconfig").capabilities
+        local clients = vim.lsp.get_clients({name = "harper_ls"})
+        if #clients > 0 then
+          vim.lsp.stop_client(clients[1].id)
+          vim.notify("Harper LSP stopped", vim.log.levels.INFO)
+        else
+          local config = {
+            name = "harper_ls",
+            cmd = {"harper-ls"},
+            capabilities = capabilities,
+            settings = {
+              ["harper-ls"] = {
+                linters = {
+                  SpellCheck = true,
+                  SentenceCapitalization = true,
+                  UnclosedQuotes = true,
+                  RepeatedWords = true,
+                  Spaces = true,
+                  Matcher = true,
+                  CorrectNumberSuffix = true,
+                },
+                diagnosticSeverity = "hint",
+                isolateEnglish = false,
+              }
+            }
+          }
+          local client = vim.lsp.start(config)
+          if client then
+            vim.lsp.buf_attach_client(0, client.id)
+            on_attach(client)
+            vim.notify("Harper LSP started", vim.log.levels.INFO)
+          end
+        end
+      end,
+      "Toggle Harper grammar checker",
+    },
+
     ["<leader>fr"] = {
       function()
         -- Only works for Typst files
