@@ -41,7 +41,7 @@ alias cd='z'
 export PATH=$PATH:~/go/bin
 export PATH=$PATH:/usr/local/go/bin
 
-alias oo="cd ~/DanaGardens"
+alias oo="cd ~/Library/Mobile Documents/iCloud~md~obsidian/Documents/DanaGardens"
 
 # if [[ -z "$NVIM" ]] && command -v theme.sh > /dev/null; then
 # 	[ -e ~/.theme_history ] && theme.sh "$(theme.sh -l|tail -n1)"
@@ -102,4 +102,33 @@ unset __conda_setup
 # <<< conda initialize <<<
 
 conda config --set auto_activate false
+
+pish() {
+  local type=$1
+  local source=$2
+
+  if [[ -z "$type" ]] || [[ -z "$source" ]]; then
+    echo "Usage: pish <type> <source>"
+    echo "Types: ab (audiobook), m (music)"
+    return 1
+  fi
+
+  local rp_host="rp@rp.local"
+  local rp_base="/media/rp/E269-F024/media"
+  local rp_jellyfin="/media/rp/E269-F024/jellyfin/media"
+
+  case $type in
+    ab|audiobook)
+      rsync -av "$source" "$rp_host:$rp_base/audiobookshelf/audiobooks/"
+      ;;
+    m|music)
+      rsync -av "$source" "$rp_host:$rp_base/music/"
+      ;;
+    *)
+      echo "Unknown type: $type"
+      echo "Types: ab (audiobook), m (music)"
+      return 1
+      ;;
+  esac
+}
 
