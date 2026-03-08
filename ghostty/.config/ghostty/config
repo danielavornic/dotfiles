@@ -3,5 +3,6 @@ font-size = 24.0
 
 window-decoration = false
 window-inherit-font-size = false
+window-padding-y = 0
 
-theme = Kanagawa Wave
+theme = TokyoNight
