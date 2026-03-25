@@ -2,8 +2,11 @@
 
 vim.opt.linebreak = true
 
-vim.filetype.add({
+vim.filetype.add {
   extension = {
     hbs = "html",
   },
-})
+  pattern = {
+    ["%.env.*"] = "sh",
+  },
+}
