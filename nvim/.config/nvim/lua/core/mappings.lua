@@ -183,39 +183,13 @@ M.general = {
 
     ["<leader>hg"] = {
       function()
-        local on_attach = require("plugins.configs.lspconfig").on_attach
-        local capabilities = require("plugins.configs.lspconfig").capabilities
         local clients = vim.lsp.get_clients({name = "harper_ls"})
         if #clients > 0 then
           vim.lsp.stop_client(clients[1].id)
-          vim.notify("Harper LSP stopped", vim.log.levels.INFO)
+          vim.notify("Harper disabled", vim.log.levels.INFO)
         else
-          local config = {
-            name = "harper_ls",
-            cmd = {"harper-ls"},
-            capabilities = capabilities,
-            settings = {
-              ["harper-ls"] = {
-                linters = {
-                  SpellCheck = true,
-                  SentenceCapitalization = true,
-                  UnclosedQuotes = true,
-                  RepeatedWords = true,
-                  Spaces = true,
-                  Matcher = true,
-                  CorrectNumberSuffix = true,
-                },
-                diagnosticSeverity = "hint",
-                isolateEnglish = false,
-              }
-            }
-          }
-          local client = vim.lsp.start(config)
-          if client then
-            vim.lsp.buf_attach_client(0, client.id)
-            on_attach(client)
-            vim.notify("Harper LSP started", vim.log.levels.INFO)
-          end
+          vim.cmd("LspStart harper_ls")
+          vim.notify("Harper enabled", vim.log.levels.INFO)
         end
       end,
       "Toggle Harper grammar checker",

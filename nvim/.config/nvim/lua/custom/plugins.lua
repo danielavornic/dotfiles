@@ -1,4 +1,5 @@
 local plugins = {
+  { "nvim-mini/mini.nvim", version = false },
   {
     "nvim-treesitter/nvim-treesitter",
     opts = function()
@@ -345,6 +346,7 @@ local plugins = {
         "tailwindcss-language-server",
         "typescript-language-server",
         "svelte-language-server",
+        "harper-ls",
       },
     },
   },

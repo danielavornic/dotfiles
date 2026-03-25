@@ -22,22 +22,24 @@ lspconfig.typst_lsp.setup {
 }
 
 -- Harper LS setup for grammar checking (disabled by default, toggle with <leader>hg)
--- lspconfig.harper_ls.setup {
---   on_attach = on_attach,
---   capabilities = capabilities,
---   settings = {
---     ["harper-ls"] = {
---       linters = {
---         SpellCheck = true,
---         SentenceCapitalization = true,
---         UnclosedQuotes = true,
---         RepeatedWords = true,
---         Spaces = true,
---         Matcher = true,
---         CorrectNumberSuffix = true,
---       },
---       diagnosticSeverity = "hint",
---       isolateEnglish = false,
---     }
---   }
--- }
+lspconfig.harper_ls.setup {
+  on_attach = on_attach,
+  capabilities = capabilities,
+  filetypes = { "typst", "markdown" },
+  autostart = false,
+  settings = {
+    ["harper-ls"] = {
+      linters = {
+        SpellCheck = true,
+        SentenceCapitalization = true,
+        UnclosedQuotes = true,
+        RepeatedWords = true,
+        Spaces = true,
+        Matcher = true,
+        CorrectNumberSuffix = true,
+      },
+      diagnosticSeverity = "hint",
+      isolateEnglish = false,
+    },
+  },
+}
