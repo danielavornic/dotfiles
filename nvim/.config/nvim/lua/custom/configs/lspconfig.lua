@@ -12,12 +12,17 @@ for _, lsp in ipairs(servers) do
   }
 end
 
+lspconfig.mdx_analyzer.setup {
+  on_attach = on_attach,
+  capabilities = capabilities,
+}
+
 -- Typst LSP setup
 lspconfig.typst_lsp.setup {
   on_attach = on_attach,
   capabilities = capabilities,
   settings = {
-    exportPdf = "onType", -- Change to "onSave" or "never" as needed
+    exportPdf = "never", -- Change to "onSave" or "never" as needed
   },
 }
 

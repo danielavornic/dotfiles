@@ -89,7 +89,17 @@ local plugins = {
   {
     "sylvanfranklin/omni-preview.nvim",
     dependencies = {
-      { "chomosuke/typst-preview.nvim", lazy = true },
+      {
+        "chomosuke/typst-preview.nvim",
+        lazy = true,
+        opts = {
+          debug = true,
+          dependencies_bin = {
+            tinymist = "/opt/homebrew/bin/tinymist",
+            websocat = vim.fn.stdpath "data" .. "/typst-preview/websocat.aarch64-apple-darwin",
+          },
+        },
+      },
       { "hat0uma/csvview.nvim",         lazy = true },
     },
     keys = {
@@ -363,6 +373,11 @@ local plugins = {
     config = function()
       require("nvim-ts-autotag").setup()
     end,
+  },
+  {
+    "davidmh/mdx.nvim",
+    lazy = false,
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
   },
 }
 return plugins
