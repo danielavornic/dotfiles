@@ -1,0 +1,25 @@
+onboarding = false
+
+[theme]
+name = "rose-pine"
+auto_switch = false
+
+[ui]
+show_agent_labels_on_pane_borders = true
+
+agent_panel_sort = "priority"
+[experimental]
+pane_history = false
+
+[keys]
+reload_config = "prefix+r"
+resize_mode = "prefix+shift+r"
+close_pane = "prefix+q"
+detach = "prefix+d"
+previous_workspace = "prefix+shift+l"
+next_workspace = "prefix+ctrl+n"
+last_pane = "prefix+tab"
+open_worktree = "prefix+shift+o"
+remove_worktree = "prefix+alt+d"
+next_tab = ["prefix+n", "ctrl+alt+]"]
+focus_agent = "prefix+ctrl+1..9"

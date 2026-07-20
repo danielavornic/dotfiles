@@ -105,3 +105,6 @@ pish() {
       ;;
   esac
 }
+
+ export VISUAL=/opt/homebrew/bin/nvim
+   export EDITOR=/opt/homebrew/bin/nvim
