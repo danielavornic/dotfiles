@@ -4,11 +4,15 @@ local null_ls = require "null-ls"
 local opts = {
   sources = {
     null_ls.builtins.formatting.stylua,
-    null_ls.builtins.formatting.prettierd,
-null_ls.builtins.formatting.black.with({
-    extra_args = { "--line-length=120" }
-  }),
-  null_ls.builtins.formatting.isort,
+    null_ls.builtins.formatting.prettierd.with({
+      condition = function(utils)
+        return not utils.root_has_file { "biome.json", "biome.jsonc" }
+      end,
+    }),
+    null_ls.builtins.formatting.black.with({
+      extra_args = { "--line-length=120" },
+    }),
+    null_ls.builtins.formatting.isort,
   },
   on_attach = function(client, bufnr)
     if client.supports_method "textDocument/formatting" then

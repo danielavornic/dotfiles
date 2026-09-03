@@ -6,7 +6,7 @@ return function()
   -- configuration vars for you
   require("match-up").setup {
     treesitter = {
-      stopline = 500,
+      enable = false,
     },
   }
 end

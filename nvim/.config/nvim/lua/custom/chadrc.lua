@@ -1,8 +1,12 @@
 ---@type ChadrcConfig
 local M = {}
 M.ui = {
-  theme = "kanagawa",
+  theme = "tokyonight",
   tabufline = { enabled = false },
+  nvdash = { load_on_startup = false },
+  statusline = {
+    theme = "minimal",
+  },
   hl_override = {
     -- General syntax italics
     Comment = { italic = true },

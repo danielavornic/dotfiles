@@ -1,7 +1,7 @@
 onboarding = false
 
 [theme]
-name = "rose-pine"
+name = "tokyo-night"
 auto_switch = false
 
 [ui]
@@ -12,6 +12,7 @@ agent_panel_sort = "priority"
 pane_history = false
 
 [keys]
+prefix = "ctrl+b"
 reload_config = "prefix+r"
 resize_mode = "prefix+shift+r"
 close_pane = "prefix+q"
@@ -23,3 +24,32 @@ open_worktree = "prefix+shift+o"
 remove_worktree = "prefix+alt+d"
 next_tab = ["prefix+n", "ctrl+alt+]"]
 focus_agent = "prefix+ctrl+1..9"
+switch_workspace = "prefix+shift+1..9"
+
+[[keys.command]]
+key = "prefix+0"
+type = "shell"
+description = "toggle herdr prefix between ctrl+b and ctrl+s"
+command = '''
+cfg="${HOME}/.config/herdr/config.toml"
+real=$(perl -MCwd=abs_path -le 'print abs_path(shift)' "$cfg")
+[ -n "$real" ] || real="$cfg"
+cur=$(sed -n 's/^prefix = "\([^"]*\)".*/\1/p' "$real")
+case "$cur" in
+  ctrl+b) new=ctrl+s ;;
+  *)      new=ctrl+b ;;
+esac
+perl -pi -e "s/^prefix = .*/prefix = \"$new\"/" "$real"
+herdr server reload-config
+'''
+
+
+[[keys.command]]              # …or in its own tab
+key = "prefix+shift+f"
+type = "shell"
+command = "herdr plugin action invoke open-file-viewer-tab --plugin herdr-file-viewer"
+
+[[keys.command]]
+key = "cmd+r"
+type = "plugin_action"
+command = "persiyanov.reviewr.toggle"   # <plugin_id>.<action_id> — note the id, not the name

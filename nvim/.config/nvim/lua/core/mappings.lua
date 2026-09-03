@@ -3,829 +3,888 @@
 local M = {}
 
 M.general = {
-  i = {
-    -- go to  beginning and end
-    ["<C-b>"] = { "<ESC>^i", "Beginning of line" },
-    ["<C-e>"] = { "<End>", "End of line" },
+	i = {
+		-- go to  beginning and end
+		["<C-b>"] = { "<ESC>^i", "Beginning of line" },
+		["<C-e>"] = { "<End>", "End of line" },
 
-    -- navigate within insert mode
-    ["<C-h>"] = { "<Left>", "Move left" },
-    ["<C-l>"] = { "<Right>", "Move right" },
-    ["<C-j>"] = { "<Down>", "Move down" },
-    ["<C-k>"] = { "<Up>", "Move up" },
-  },
+		-- navigate within insert mode
+		["jk"] = { "<Esc>", "Exit insert mode" },
+		["<C-h>"] = { "<Left>", "Move left" },
+		["<C-l>"] = { "<Right>", "Move right" },
+		["<C-j>"] = { "<Down>", "Move down" },
+		["<C-k>"] = { "<Up>", "Move up" },
+	},
 
-  n = {
-    ["<Esc>"] = { "<cmd> noh <CR>", "Clear highlights" },
+	n = {
+		["<Esc>"] = { "<cmd> noh <CR>", "Clear highlights" },
 
-    -- switch between windows
-    ["<C-h>"] = { "<C-w>h", "Window left" },
-    ["<C-l>"] = { "<C-w>l", "Window right" },
-    ["<C-j>"] = { "<C-w>j", "Window down" },
-    ["<C-k>"] = { "<C-w>k", "Window up" },
+		-- switch between windows
+		["<C-h>"] = { "<C-w>h", "Window left" },
+		["<C-l>"] = { "<C-w>l", "Window right" },
+		["<C-j>"] = { "<C-w>j", "Window down" },
+		["<C-k>"] = { "<C-w>k", "Window up" },
 
-    -- Copy all
-    ["<C-c>"] = { "<cmd> %y+ <CR>", "Copy whole file" },
+		-- Copy all
+		["<C-c>"] = { "<cmd> %y+ <CR>", "Copy whole file" },
 
-    -- line numbers
-    ["<leader>n"] = { "<cmd> set nu! <CR>", "Toggle line number" },
-    ["<leader>rn"] = { "<cmd> set rnu! <CR>", "Toggle relative number" },
+		-- line numbers
+		["<leader>n"] = { "<cmd> set nu! <CR>", "Toggle line number" },
+		["<leader>rn"] = { "<cmd> set rnu! <CR>", "Toggle relative number" },
 
-    -- spell checking
-    ["<leader>sp"] = { "<cmd> set spell! <CR>", "Toggle spell check" },
+		-- spell checking
+		["<leader>sp"] = { "<cmd> set spell! <CR>", "Toggle spell check" },
 
-    -- open folder
-    ["<C-f>"] = { "<cmd>Open .<CR>", "Open file explorer" },
+		-- open folder
+		["<C-f>"] = { "<cmd>Open .<CR>", "Open file explorer" },
 
-    -- toggle wrap
-    ["<leader>tw"] = { "<cmd> set wrap! <CR>", "Toggle wrap" },
+		-- toggle wrap
+		["<leader>tw"] = { "<cmd> set wrap! <CR>", "Toggle wrap" },
 
-    -- Allow moving the cursor through wrapped lines with j, k, <Up> and <Down>
-    -- http://www.reddit.com/r/vim/comments/2k4cbr/problem_with_gj_and_gk/
-    -- empty mode is same as using <cmd> :map
-    -- also don't use g[j|k] when in operator pending mode, so it doesn't alter d, y or c behaviour
-    ["j"] = { 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"', "Move down", opts = { expr = true } },
-    ["k"] = { 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"', "Move up", opts = { expr = true } },
-    ["<Up>"] = { 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"', "Move up", opts = { expr = true } },
-    ["<Down>"] = { 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"', "Move down", opts = { expr = true } },
+		-- Allow moving the cursor through wrapped lines with j, k, <Up> and <Down>
+		-- http://www.reddit.com/r/vim/comments/2k4cbr/problem_with_gj_and_gk/
+		-- empty mode is same as using <cmd> :map
+		-- also don't use g[j|k] when in operator pending mode, so it doesn't alter d, y or c behaviour
+		["j"] = { 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"', "Move down", opts = { expr = true } },
+		["k"] = { 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"', "Move up", opts = { expr = true } },
+		["<Up>"] = { 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"', "Move up", opts = { expr = true } },
+		["<Down>"] = { 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"', "Move down", opts = { expr = true } },
 
-    -- new buffer
-    ["<leader>ch"] = { "<cmd> NvCheatsheet <CR>", "Mapping cheatsheet" },
+		-- new buffer
+		["<leader>ch"] = { "<cmd> NvCheatsheet <CR>", "Mapping cheatsheet" },
 
-    ["<leader>fm"] = {
-      function()
-        vim.lsp.buf.format { async = true }
-      end,
-      "LSP formatting",
-    },
+		["<leader>fm"] = {
+			function()
+				vim.lsp.buf.format({ async = true })
+			end,
+			"LSP formatting",
+		},
 
-    ["<C-d>"] = { "<C-d>zz", "Scroll down and center" },
-    ["<C-u>"] = { "<C-u>zz", "Scroll up and center" },
-    ["n"] = { "nzzzv", "Go to next result and center" },
-    ["N"] = { "Nzzzv", "Go to previous result and center" },
-    ["G"] = { "Gzz", "Go to end of file and center" },
+		["<C-d>"] = { "<C-d>zz", "Scroll down and center" },
+		["<C-u>"] = { "<C-u>zz", "Scroll up and center" },
+		["n"] = { "nzzzv", "Go to next result and center" },
+		["N"] = { "Nzzzv", "Go to previous result and center" },
+		["G"] = { "Gzz", "Go to end of file and center" },
 
-    ["<leader>p"] = {
-      function()
-        local yanked_text = vim.fn.getreg "0"
-        yanked_text = yanked_text:gsub("\n$", "")
-        yanked_text = yanked_text:gsub("^%s+", "")
-        vim.api.nvim_put({ yanked_text }, "c", true, true)
-      end,
-      "Paste cleaned yanked text",
-    },
+		["<leader>p"] = {
+			function()
+				local yanked_text = vim.fn.getreg("0")
+				yanked_text = yanked_text:gsub("\n$", "")
+				yanked_text = yanked_text:gsub("^%s+", "")
+				vim.api.nvim_put({ yanked_text }, "c", true, true)
+			end,
+			"Paste cleaned yanked text",
+		},
 
-    ["<leader>on"] = {
-      function()
-        vim.cmd "ObsidianTemplate INBOX-Template"
-        vim.defer_fn(function()
-          pcall(function()
-            vim.cmd [[1,/^\\S/s/^\\n\\{1,}//]]
+		["<leader>on"] = {
+			function()
+				vim.cmd("ObsidianTemplate INBOX-Template")
+				vim.defer_fn(function()
+					pcall(function()
+						vim.cmd([[1,/^\\S/s/^\\n\\{1,}//]])
 
-            -- Get current file path and apply sed replacements for template variables
-            local filepath = vim.fn.expand "%:p"
-            local title = vim.fn.input "Enter note title: "
-            local current_date = os.date "%Y-%m-%d"
+						-- Get current file path and apply sed replacements for template variables
+						local filepath = vim.fn.expand("%:p")
+						local title = vim.fn.input("Enter note title: ")
+						local current_date = os.date("%Y-%m-%d")
 
-            if title ~= "" then
-              os.execute("sed -i 's/{{title}}/" .. vim.fn.shellescape(title) .. "/g' '" .. filepath .. "'")
-            end
-            os.execute("sed -i 's/{{date}}/" .. current_date .. "/g' '" .. filepath .. "'")
+						if title ~= "" then
+							os.execute(
+								"sed -i 's/{{title}}/" .. vim.fn.shellescape(title) .. "/g' '" .. filepath .. "'"
+							)
+						end
+						os.execute("sed -i 's/{{date}}/" .. current_date .. "/g' '" .. filepath .. "'")
 
-            vim.cmd "edit!" -- Reload the file to see changes
-          end)
-        end, 200)
-      end,
-      "Create Obsidian Full Note and enter ZenMode",
-    },
-    ["<leader>od"] = {
-      ":ObsidianTemplate Daily Note<cr> :lua vim.cmd([[1,/^\\S/s/^\\n\\{1,}//]])<cr>",
-      "Create Obsidian Daily Note",
-    },
-    ["<leader>ot"] = { ":ObsidianTags<cr>", "View Obsidian tags" },
+						vim.cmd("edit!") -- Reload the file to see changes
+					end)
+				end, 200)
+			end,
+			"Create Obsidian Full Note and enter ZenMode",
+		},
+		["<leader>od"] = {
+			":ObsidianTemplate Daily Note<cr> :lua vim.cmd([[1,/^\\S/s/^\\n\\{1,}//]])<cr>",
+			"Create Obsidian Daily Note",
+		},
+		["<leader>ot"] = { ":ObsidianTags<cr>", "View Obsidian tags" },
 
-    ["<leader>of"] = {
-      ":s/\\(# \\)\\(.*\\)/\\1\\=substitute(\\2, '-\\([a-z]\\)', ' \\U\\1', 'g')/e | s/-/ /g<cr>",
-      "Format heading kebab-case to Title Case",
-    },
+		["<leader>of"] = {
+			":s/\\(# \\)\\(.*\\)/\\1\\=substitute(\\2, '-\\([a-z]\\)', ' \\U\\1', 'g')/e | s/-/ /g<cr>",
+			"Format heading kebab-case to Title Case",
+		},
 
-    ["<leader>oa"] = {
-      function()
-        local file = vim.fn.expand "%:p"
-        local vault_path = vim.fn.expand "~/DanaGardens"
+		["<leader>oa"] = {
+			function()
+				local file = vim.fn.expand("%:p")
+				local vault_path = vim.fn.expand("~/DanaGardens")
 
-        -- Check if file is in vault
-        if file:find(vault_path, 1, true) then
-          -- Get relative path from vault root (without .md extension)
-          local relative_path = file:sub(#vault_path + 2)
-          relative_path = relative_path:gsub("%.md$", "")
+				-- Check if file is in vault
+				if file:find(vault_path, 1, true) then
+					-- Get relative path from vault root (without .md extension)
+					local relative_path = file:sub(#vault_path + 2)
+					relative_path = relative_path:gsub("%.md$", "")
 
-          -- Launch Obsidian via Flatpak with URI scheme
-          local cmd = "flatpak run md.obsidian.Obsidian 'obsidian://open?vault=DanaGardens&file="
-              .. vim.fn.shellescape(relative_path)
-              .. "' &"
-          vim.fn.jobstart(cmd, {
-            detach = true,
-            on_exit = function(_, code)
-              if code == 0 then
-                vim.notify("✓ Opened in Obsidian app", vim.log.levels.INFO, { title = "Obsidian" })
-              end
-            end,
-          })
-        else
-          vim.notify("File is not in Obsidian vault", vim.log.levels.WARN, { title = "Obsidian" })
-        end
-      end,
-      "Open file in Obsidian app",
-    },
+					-- Launch Obsidian via Flatpak with URI scheme
+					local cmd = "flatpak run md.obsidian.Obsidian 'obsidian://open?vault=DanaGardens&file="
+						.. vim.fn.shellescape(relative_path)
+						.. "' &"
+					vim.fn.jobstart(cmd, {
+						detach = true,
+						on_exit = function(_, code)
+							if code == 0 then
+								vim.notify("✓ Opened in Obsidian app", vim.log.levels.INFO, { title = "Obsidian" })
+							end
+						end,
+					})
+				else
+					vim.notify("File is not in Obsidian vault", vim.log.levels.WARN, { title = "Obsidian" })
+				end
+			end,
+			"Open file in Obsidian app",
+		},
 
-    ["<leader>z"] = { "<cmd> ZenMode <CR>", "Toggle ZenMode" },
+		["<leader>z"] = { "<cmd> ZenMode <CR>", "Toggle ZenMode" },
 
-    ["<leader>tq"] = {
-      function()
-        -- Only works for Typst files
-        if vim.bo.filetype ~= "typst" then
-          vim.notify("This command only works with Typst files (.typ)", vim.log.levels.WARN, { title = "Typst" })
-          return
-        end
+		["<leader>tq"] = {
+			function()
+				-- Only works for Typst files
+				if vim.bo.filetype ~= "typst" then
+					vim.notify(
+						"This command only works with Typst files (.typ)",
+						vim.log.levels.WARN,
+						{ title = "Typst" }
+					)
+					return
+				end
 
-        local file = vim.fn.expand "%:p"
-        local cmd = "prequery " .. vim.fn.shellescape(file)
+				local file = vim.fn.expand("%:p")
+				local cmd = "prequery " .. vim.fn.shellescape(file)
 
-        vim.fn.jobstart(cmd, {
-          on_exit = function(_, code)
-            if code == 0 then
-              vim.notify("✓ Prequery completed successfully", vim.log.levels.INFO, { title = "Typst" })
-            else
-              vim.notify("✗ Prequery failed", vim.log.levels.ERROR, { title = "Typst" })
-            end
-          end,
-          on_stderr = function(_, data)
-            if data and #data > 0 and data[1] ~= "" then
-              vim.notify("Error: " .. table.concat(data, "\n"), vim.log.levels.ERROR, { title = "Typst" })
-            end
-          end,
-        })
-      end,
-      "Run prequery on current Typst file",
-    },
+				vim.fn.jobstart(cmd, {
+					on_exit = function(_, code)
+						if code == 0 then
+							vim.notify("✓ Prequery completed successfully", vim.log.levels.INFO, { title = "Typst" })
+						else
+							vim.notify("✗ Prequery failed", vim.log.levels.ERROR, { title = "Typst" })
+						end
+					end,
+					on_stderr = function(_, data)
+						if data and #data > 0 and data[1] ~= "" then
+							vim.notify("Error: " .. table.concat(data, "\n"), vim.log.levels.ERROR, { title = "Typst" })
+						end
+					end,
+				})
+			end,
+			"Run prequery on current Typst file",
+		},
 
-    ["<leader>mv"] = { "<cmd> Markview <CR>", "Toggle Markview" },
+		["<leader>mv"] = {
+			function()
+				require("render-markdown").toggle()
+			end,
+			"Toggle render-markdown",
+		},
 
-    ["<leader>nh"] = { "<cmd>Noice dismiss<CR>", "Dismiss noice notification" },
+		["<leader>nh"] = { "<cmd>Noice dismiss<CR>", "Dismiss noice notification" },
 
-    ["<leader>co"] = {
-      function()
-        _G.toggle_copilot()
-      end,
-      "Toggle copilot completion",
-    },
+		["<leader>co"] = {
+			function()
+				_G.toggle_copilot()
+			end,
+			"Toggle copilot completion",
+		},
 
-    ["<leader>hg"] = {
-      function()
-        local clients = vim.lsp.get_clients({name = "harper_ls"})
-        if #clients > 0 then
-          vim.lsp.stop_client(clients[1].id)
-          vim.notify("Harper disabled", vim.log.levels.INFO)
-        else
-          vim.cmd("LspStart harper_ls")
-          vim.notify("Harper enabled", vim.log.levels.INFO)
-        end
-      end,
-      "Toggle Harper grammar checker",
-    },
+		["<leader>hg"] = {
+			function()
+				local clients = vim.lsp.get_clients({ name = "harper_ls" })
+				if #clients > 0 then
+					vim.lsp.stop_client(clients[1].id)
+					vim.notify("Harper disabled", vim.log.levels.INFO)
+				else
+					vim.cmd("LspStart harper_ls")
+					vim.notify("Harper enabled", vim.log.levels.INFO)
+				end
+			end,
+			"Toggle Harper grammar checker",
+		},
 
-    ["<leader>fr"] = {
-      function()
-        -- Only works for Typst files
-        if vim.bo.filetype ~= "typst" then
-          vim.notify("This command only works with Typst files (.typ)", vim.log.levels.WARN, { title = "Typst" })
-          return
-        end
+		["<leader>fR"] = {
+			function()
+				if vim.bo.filetype ~= "typst" then
+					vim.notify(
+						"This command only works with Typst files (.typ)",
+						vim.log.levels.WARN,
+						{ title = "Typst" }
+					)
+					return
+				end
 
-        local pdf_path = vim.fn.expand "%:p:r" .. ".pdf"
-        vim.fn.jobstart("zathura --fork " .. vim.fn.shellescape(pdf_path) .. " &", {
-          detach = true,
-          on_exit = function(_, code)
-            if code ~= 0 then
-              vim.notify("Failed to open PDF with zathura", vim.log.levels.ERROR, { title = "Typst" })
-            end
-          end,
-        })
-      end,
-      "Open Typst PDF with zathura",
-    },
-  },
+				local pdf_path = vim.fn.expand("%:p:r") .. ".pdf"
+				vim.fn.jobstart("zathura --fork " .. vim.fn.shellescape(pdf_path) .. " &", {
+					detach = true,
+					on_exit = function(_, code)
+						if code ~= 0 then
+							vim.notify("Failed to open PDF with zathura", vim.log.levels.ERROR, { title = "Typst" })
+						end
+					end,
+				})
+			end,
+			"Open Typst PDF with zathura",
+		},
 
-  t = {
-    ["<C-x>"] = { vim.api.nvim_replace_termcodes("<C-\\><C-N>", true, true, true), "Escape terminal mode" },
-  },
+		["<leader>ps"] = {
+			function()
+				require("custom.configs.typst-preview").start()
+			end,
+			"Start tinymist preview (direct)",
+		},
 
-  v = {
-    ["<Up>"] = { 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"', "Move up", opts = { expr = true } },
-    ["<Down>"] = { 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"', "Move down", opts = { expr = true } },
-    ["<"] = { "<gv", "Indent line" },
-    [">"] = { ">gv", "Indent line" },
-  },
+		["<leader>pS"] = {
+			function()
+				require("custom.configs.typst-preview").stop()
+			end,
+			"Stop tinymist preview (direct)",
+		},
 
-  x = {
-    ["j"] = { 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"', "Move down", opts = { expr = true } },
-    ["k"] = { 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"', "Move up", opts = { expr = true } },
-    -- Don't copy the replaced text after pasting in visual mode
-    -- https://vim.fandom.com/wiki/Replace_a_word_with_yanked_text#Alternative_mapping_for_paste
-    ["p"] = { 'p:let @+=@0<CR>:let @"=@0<CR>', "Dont copy replaced text", opts = { silent = true } },
-  },
+		["<leader>pt"] = {
+			function()
+				require("custom.configs.typst-preview").toggle()
+			end,
+			"Toggle tinymist preview (direct)",
+		},
+	},
+
+	t = {
+		["<C-x>"] = { vim.api.nvim_replace_termcodes("<C-\\><C-N>", true, true, true), "Escape terminal mode" },
+	},
+
+	v = {
+		["<Up>"] = { 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"', "Move up", opts = { expr = true } },
+		["<Down>"] = { 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"', "Move down", opts = { expr = true } },
+		["<"] = { "<gv", "Indent line" },
+		[">"] = { ">gv", "Indent line" },
+	},
+
+	x = {
+		["j"] = { 'v:count || mode(1)[0:1] == "no" ? "j" : "gj"', "Move down", opts = { expr = true } },
+		["k"] = { 'v:count || mode(1)[0:1] == "no" ? "k" : "gk"', "Move up", opts = { expr = true } },
+		-- Don't copy the replaced text after pasting in visual mode
+		-- https://vim.fandom.com/wiki/Replace_a_word_with_yanked_text#Alternative_mapping_for_paste
+		["p"] = { 'p:let @+=@0<CR>:let @"=@0<CR>', "Dont copy replaced text", opts = { silent = true } },
+	},
 }
 
 M.tabufline = {
-  plugin = true,
+	plugin = true,
 
-  n = {
-    -- cycle through buffers
-    ["<tab>"] = {
-      function()
-        require("nvchad.tabufline").tabuflineNext()
-      end,
-      "Goto next buffer",
-    },
+	n = {
+		-- cycle through buffers
+		["<tab>"] = {
+			function()
+				require("nvchad.tabufline").tabuflineNext()
+			end,
+			"Goto next buffer",
+		},
 
-    ["<S-tab>"] = {
-      function()
-        require("nvchad.tabufline").tabuflinePrev()
-      end,
-      "Goto prev buffer",
-    },
-  },
+		["<S-tab>"] = {
+			function()
+				require("nvchad.tabufline").tabuflinePrev()
+			end,
+			"Goto prev buffer",
+		},
+	},
 }
 
 M.comment = {
-  plugin = true,
+	plugin = true,
 
-  -- toggle comment in both modes
-  n = {
-    ["<leader>/"] = {
-      function()
-        require("ts-comments").toggle()
-      end,
-      "Toggle comment",
-    },
-  },
+	-- toggle comment in both modes
+	n = {
+		["<leader>/"] = {
+			function()
+				require("ts-comments").toggle()
+			end,
+			"Toggle comment",
+		},
+	},
 
-  v = {
-    ["<leader>/"] = {
-      function()
-        require("ts-comments").toggle()
-      end,
-      "Toggle comment",
-    },
-  },
+	v = {
+		["<leader>/"] = {
+			function()
+				require("ts-comments").toggle()
+			end,
+			"Toggle comment",
+		},
+	},
 }
 
 M.lspconfig = {
-  plugin = true,
+	plugin = true,
 
-  -- See `<cmd> :help vim.lsp.*` for documentation on any of the below functions
+	-- See `<cmd> :help vim.lsp.*` for documentation on any of the below functions
 
-  n = {
-    ["gD"] = {
-      function()
-        vim.lsp.buf.declaration()
-      end,
-      "LSP declaration",
-    },
+	n = {
+		["gD"] = {
+			function()
+				vim.lsp.buf.declaration()
+			end,
+			"LSP declaration",
+		},
 
-    ["gd"] = {
-      function()
-        vim.lsp.buf.definition()
-      end,
-      "LSP definition",
-    },
+		["gd"] = {
+			function()
+				vim.lsp.buf.definition()
+			end,
+			"LSP definition",
+		},
 
-    ["K"] = {
-      function()
-        vim.lsp.buf.hover()
-      end,
-      "LSP hover",
-    },
+		["K"] = {
+			function()
+				vim.lsp.buf.hover()
+			end,
+			"LSP hover",
+		},
 
-    ["gi"] = {
-      function()
-        vim.lsp.buf.implementation()
-      end,
-      "LSP implementation",
-    },
+		["gi"] = {
+			function()
+				vim.lsp.buf.implementation()
+			end,
+			"LSP implementation",
+		},
 
-    ["<leader>ls"] = {
-      function()
-        vim.lsp.buf.signature_help()
-      end,
-      "LSP signature help",
-    },
+		["<leader>ls"] = {
+			function()
+				vim.lsp.buf.signature_help()
+			end,
+			"LSP signature help",
+		},
 
-    ["<leader>D"] = {
-      function()
-        vim.lsp.buf.type_definition()
-      end,
-      "LSP definition type",
-    },
+		["<leader>D"] = {
+			function()
+				vim.lsp.buf.type_definition()
+			end,
+			"LSP definition type",
+		},
 
-    ["<leader>ra"] = {
-      function()
-        require("nvchad.renamer").open()
-      end,
-      "LSP rename",
-    },
+		["<leader>ra"] = {
+			function()
+				require("nvchad.renamer").open()
+			end,
+			"LSP rename",
+		},
 
-    ["<leader>ca"] = {
-      function()
-        vim.lsp.buf.code_action()
-      end,
-      "LSP code action",
-    },
+		["<leader>ca"] = {
+			function()
+				vim.lsp.buf.code_action()
+			end,
+			"LSP code action",
+		},
 
-    ["gr"] = {
-      function()
-        vim.lsp.buf.references()
-      end,
-      "LSP references",
-    },
+		["gr"] = {
+			function()
+				vim.lsp.buf.references()
+			end,
+			"LSP references",
+		},
 
-    ["<leader>lf"] = {
-      function()
-        vim.diagnostic.open_float { border = "rounded" }
-      end,
-      "Floating diagnostic",
-    },
+		["<leader>lf"] = {
+			function()
+				vim.diagnostic.open_float({ border = "rounded" })
+			end,
+			"Floating diagnostic",
+		},
 
-    ["[d"] = {
-      function()
-        vim.diagnostic.goto_prev { float = { border = "rounded" } }
-      end,
-      "Goto prev",
-    },
+		["[d"] = {
+			function()
+				vim.diagnostic.goto_prev({ float = { border = "rounded" } })
+			end,
+			"Goto prev",
+		},
 
-    ["]d"] = {
-      function()
-        vim.diagnostic.goto_next { float = { border = "rounded" } }
-      end,
-      "Goto next",
-    },
+		["]d"] = {
+			function()
+				vim.diagnostic.goto_next({ float = { border = "rounded" } })
+			end,
+			"Goto next",
+		},
 
-    ["<leader>q"] = {
-      function()
-        vim.diagnostic.setloclist()
-      end,
-      "Diagnostic setloclist",
-    },
+		["<leader>q"] = {
+			function()
+				vim.diagnostic.setloclist()
+			end,
+			"Diagnostic setloclist",
+		},
 
-    ["<leader>wa"] = {
-      function()
-        vim.lsp.buf.add_workspace_folder()
-      end,
-      "Add workspace folder",
-    },
+		["<leader>wa"] = {
+			function()
+				vim.lsp.buf.add_workspace_folder()
+			end,
+			"Add workspace folder",
+		},
 
-    ["<leader>wr"] = {
-      function()
-        vim.lsp.buf.remove_workspace_folder()
-      end,
-      "Remove workspace folder",
-    },
+		["<leader>wr"] = {
+			function()
+				vim.lsp.buf.remove_workspace_folder()
+			end,
+			"Remove workspace folder",
+		},
 
-    ["<leader>wl"] = {
-      function()
-        print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-      end,
-      "List workspace folders",
-    },
-  },
+		["<leader>wl"] = {
+			function()
+				print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+			end,
+			"List workspace folders",
+		},
+	},
 
-  v = {
-    ["<leader>ca"] = {
-      function()
-        vim.lsp.buf.code_action()
-      end,
-      "LSP code action",
-    },
-  },
+	v = {
+		["<leader>ca"] = {
+			function()
+				vim.lsp.buf.code_action()
+			end,
+			"LSP code action",
+		},
+	},
 }
 
 M.nvimtree = {
-  plugin = true,
+	plugin = true,
 
-  n = {
-    -- toggle
-    ["<C-n>"] = { "<cmd> NvimTreeToggle <CR>", "Toggle nvimtree" },
+	n = {
+		-- toggle
+		["<C-n>"] = { "<cmd> NvimTreeToggle <CR>", "Toggle nvimtree" },
 
-    -- focus
-    ["<leader>e"] = { "<cmd> NvimTreeFocus <CR>", "Focus nvimtree" },
-  },
+		-- focus
+		["<leader>e"] = { "<cmd> NvimTreeFocus <CR>", "Focus nvimtree" },
+	},
 }
 
 M.telescope = {
-  plugin = true,
+	plugin = true,
 
-  n = {
-    -- find
-    ["<leader>ff"] = { "<cmd> Telescope find_files <CR>", "Find files" },
-    ["<leader>fa"] = { "<cmd> Telescope find_files follow=true no_ignore=true hidden=true <CR>", "Find all" },
-    ["<leader>fw"] = { "<cmd> Telescope live_grep <CR>", "Live grep" },
-    ["<leader>fb"] = { "<cmd> Telescope buffers <CR>", "Find buffers" },
-    ["<leader>fh"] = { "<cmd> Telescope help_tags <CR>", "Help page" },
-    ["<leader>fo"] = { "<cmd> Telescope oldfiles <CR>", "Find oldfiles" },
-    ["<leader>fz"] = { "<cmd> Telescope current_buffer_fuzzy_find <CR>", "Find in current buffer" },
-    ["<leader>fg"] = {
-      function()
-        require("telescope.builtin").find_files {
-          cwd = vim.fn.expand "~/DanaGardens",
-          file_ignore_patterns = { "**/_attachments/**", "**/.obsidian/**" },
-        }
-      end,
-      "Find files in DanaGardens",
-    },
+	n = {
+		-- find
+		["<leader>ff"] = { "<cmd> Telescope find_files <CR>", "Find files" },
+		["<leader>fa"] = { "<cmd> Telescope find_files follow=true no_ignore=true hidden=true <CR>", "Find all" },
+		["<leader>fw"] = { "<cmd> Telescope live_grep <CR>", "Live grep" },
+		["<leader>fb"] = { "<cmd> Telescope buffers <CR>", "Find buffers" },
+		["<leader>fh"] = { "<cmd> Telescope help_tags <CR>", "Help page" },
+		["<leader>fo"] = { "<cmd> Telescope oldfiles <CR>", "Find oldfiles" },
+		["<leader>fz"] = { "<cmd> Telescope current_buffer_fuzzy_find <CR>", "Find in current buffer" },
+		["<leader>fg"] = {
+			function()
+				require("telescope.builtin").find_files({
+					cwd = vim.fn.expand("~/DanaGardens"),
+					file_ignore_patterns = { "**/_attachments/**", "**/.obsidian/**" },
+				})
+			end,
+			"Find files in DanaGardens",
+		},
 
-    -- git
-    ["<leader>cm"] = { "<cmd> Telescope git_commits <CR>", "Git commits" },
-    ["<leader>gt"] = { "<cmd> Telescope git_status <CR>", "Git status" },
+		-- git
+		["<leader>cm"] = { "<cmd> Telescope git_commits <CR>", "Git commits" },
+		["<leader>gt"] = { "<cmd> Telescope git_status <CR>", "Git status" },
 
-    -- pick a hidden term
-    ["<leader>pt"] = { "<cmd> Telescope terms <CR>", "Pick hidden term" },
+		-- pick a hidden term
+		["<leader>pt"] = { "<cmd> Telescope terms <CR>", "Pick hidden term" },
 
-    -- theme switcher
-    ["<leader>th"] = { "<cmd> Telescope themes <CR>", "Nvchad themes" },
+		-- theme switcher
+		["<leader>th"] = { "<cmd> Telescope themes <CR>", "Nvchad themes" },
 
-    ["<leader>ma"] = { "<cmd> Telescope marks <CR>", "telescope bookmarks" },
+		["<leader>ma"] = { "<cmd> Telescope marks <CR>", "telescope bookmarks" },
+		["<leader>fr"] = { "<cmd> Telescope resume <CR>", "Resume telescope" },
 
-    ["<leader>tc"] = {
-      function()
-        -- Only works for Typst files
-        if vim.bo.filetype ~= "typst" then
-          vim.notify("This command only works with Typst files (.typ)", vim.log.levels.WARN, { title = "Typst" })
-          return
-        end
+		["<leader>tc"] = {
+			function()
+				-- Only works for Typst files
+				if vim.bo.filetype ~= "typst" then
+					vim.notify(
+						"This command only works with Typst files (.typ)",
+						vim.log.levels.WARN,
+						{ title = "Typst" }
+					)
+					return
+				end
 
-        local pickers = require "telescope.pickers"
-        local finders = require "telescope.finders"
-        local conf = require("telescope.config").values
-        local actions = require "telescope.actions"
-        local action_state = require "telescope.actions.state"
+				local pickers = require("telescope.pickers")
+				local finders = require("telescope.finders")
+				local conf = require("telescope.config").values
+				local actions = require("telescope.actions")
+				local action_state = require("telescope.actions.state")
 
-        local opts = {
-          "Compile to PDF",
-          "Compile to PNG",
-          "Compile to SVG",
-          "Watch and compile",
-        }
+				local opts = {
+					"Compile to PDF",
+					"Compile to PNG",
+					"Compile to SVG",
+					"Watch and compile",
+				}
 
-        pickers
-            .new({}, {
-              prompt_title = "Typst Compile Options",
-              finder = finders.new_table {
-                results = opts,
-              },
-              sorter = conf.generic_sorter {},
-              attach_mappings = function(prompt_bufnr, map)
-                actions.select_default:replace(function()
-                  actions.close(prompt_bufnr)
-                  local selection = action_state.get_selected_entry()
-                  local choice = selection[1]
+				pickers
+					.new({}, {
+						prompt_title = "Typst Compile Options",
+						finder = finders.new_table({
+							results = opts,
+						}),
+						sorter = conf.generic_sorter({}),
+						attach_mappings = function(prompt_bufnr, map)
+							actions.select_default:replace(function()
+								actions.close(prompt_bufnr)
+								local selection = action_state.get_selected_entry()
+								local choice = selection[1]
 
-                  local file = vim.fn.expand "%:p"
-                  local basename = vim.fn.expand "%:p:r"
-                  local cmd
+								local file = vim.fn.expand("%:p")
+								local basename = vim.fn.expand("%:p:r")
+								local cmd
 
-                  if choice == "Compile to PDF" then
-                    cmd = "typst compile " .. file .. " " .. basename .. ".pdf"
-                  elseif choice == "Compile to PNG" then
-                    cmd = "typst compile " .. file .. " --format png " .. basename .. ".png"
-                  elseif choice == "Compile to SVG" then
-                    cmd = "typst compile " .. file .. " --format svg " .. basename .. ".svg"
-                  elseif choice == "Watch and compile" then
-                    cmd = "typst watch " .. file .. " " .. basename .. ".pdf"
-                  end
+								if choice == "Compile to PDF" then
+									cmd = "typst compile " .. file .. " " .. basename .. ".pdf"
+								elseif choice == "Compile to PNG" then
+									cmd = "typst compile " .. file .. " --format png " .. basename .. ".png"
+								elseif choice == "Compile to SVG" then
+									cmd = "typst compile " .. file .. " --format svg " .. basename .. ".svg"
+								elseif choice == "Watch and compile" then
+									cmd = "typst watch " .. file .. " " .. basename .. ".pdf"
+								end
 
-                  vim.fn.jobstart(cmd, {
-                    on_exit = function(_, code)
-                      if code == 0 then
-                        vim.notify(
-                          "✓ " .. choice .. " completed successfully",
-                          vim.log.levels.INFO,
-                          { title = "Typst" }
-                        )
-                      else
-                        vim.notify("✗ " .. choice .. " failed", vim.log.levels.ERROR, { title = "Typst" })
-                      end
-                    end,
-                    on_stderr = function(_, data)
-                      if data and #data > 0 and data[1] ~= "" then
-                        vim.notify("Error: " .. table.concat(data, "\n"), vim.log.levels.ERROR, { title = "Typst" })
-                      end
-                    end,
-                  })
-                end)
-                return true
-              end,
-            })
-            :find()
-      end,
-      "Typst compile options",
-    },
+								vim.fn.jobstart(cmd, {
+									on_exit = function(_, code)
+										if code == 0 then
+											vim.notify(
+												"✓ " .. choice .. " completed successfully",
+												vim.log.levels.INFO,
+												{ title = "Typst" }
+											)
+										else
+											vim.notify(
+												"✗ " .. choice .. " failed",
+												vim.log.levels.ERROR,
+												{ title = "Typst" }
+											)
+										end
+									end,
+									on_stderr = function(_, data)
+										if data and #data > 0 and data[1] ~= "" then
+											vim.notify(
+												"Error: " .. table.concat(data, "\n"),
+												vim.log.levels.ERROR,
+												{ title = "Typst" }
+											)
+										end
+									end,
+								})
+							end)
+							return true
+						end,
+					})
+					:find()
+			end,
+			"Typst compile options",
+		},
 
-    ["<leader>md"] = {
-      function()
-        -- Only works for Markdown files
-        if vim.bo.filetype ~= "markdown" then
-          vim.notify("This command only works with Markdown files (.md)", vim.log.levels.WARN, { title = "Markdown" })
-          return
-        end
+		["<leader>md"] = {
+			function()
+				-- Only works for Markdown files
+				if vim.bo.filetype ~= "markdown" then
+					vim.notify(
+						"This command only works with Markdown files (.md)",
+						vim.log.levels.WARN,
+						{ title = "Markdown" }
+					)
+					return
+				end
 
-        local pickers = require "telescope.pickers"
-        local finders = require "telescope.finders"
-        local conf = require("telescope.config").values
-        local actions = require "telescope.actions"
-        local action_state = require "telescope.actions.state"
+				local pickers = require("telescope.pickers")
+				local finders = require("telescope.finders")
+				local conf = require("telescope.config").values
+				local actions = require("telescope.actions")
+				local action_state = require("telescope.actions.state")
 
-        local opts = {
-          "Convert to PDF (LaTeX engine)",
-          "Convert to HTML (pandoc)",
-          "Convert to DOCX (pandoc)",
-          "Live preview in browser",
-          "PDF preview (auto-open)",
-        }
+				local opts = {
+					"Convert to PDF (LaTeX engine)",
+					"Convert to HTML (pandoc)",
+					"Convert to DOCX (pandoc)",
+					"Live preview in browser",
+					"PDF preview (auto-open)",
+				}
 
-        pickers
-            .new({}, {
-              prompt_title = "Markdown Convert Options",
-              finder = finders.new_table {
-                results = opts,
-              },
-              sorter = conf.generic_sorter {},
-              attach_mappings = function(prompt_bufnr, map)
-                actions.select_default:replace(function()
-                  actions.close(prompt_bufnr)
-                  local selection = action_state.get_selected_entry()
-                  local choice = selection[1]
+				pickers
+					.new({}, {
+						prompt_title = "Markdown Convert Options",
+						finder = finders.new_table({
+							results = opts,
+						}),
+						sorter = conf.generic_sorter({}),
+						attach_mappings = function(prompt_bufnr, map)
+							actions.select_default:replace(function()
+								actions.close(prompt_bufnr)
+								local selection = action_state.get_selected_entry()
+								local choice = selection[1]
 
-                  local file = vim.fn.expand "%:p"
-                  local basename = vim.fn.expand "%:p:r"
-                  local cmd
+								local file = vim.fn.expand("%:p")
+								local basename = vim.fn.expand("%:p:r")
+								local cmd
 
-                  if choice == "Convert to PDF (LaTeX engine)" then
-                    -- Use LaTeX engine with math support and Obsidian image conversion
-                    local temp_file = basename .. "_temp.md"
-                    cmd = "sed 's/!\\?\\[\\[\\([^|]*\\)|[0-9]*\\]\\]/![](\\1)/g' '"
-                        .. file
-                        .. "' | sed 's/%20/ /g' > '"
-                        .. temp_file
-                        .. "' && pandoc '"
-                        .. temp_file
-                        .. "' --pdf-engine=pdflatex -V geometry:margin=0.5in --highlight-style=tango -V colorlinks=false -o '"
-                        .. basename
-                        .. ".pdf' && rm '"
-                        .. temp_file
-                        .. "'"
-                  elseif choice == "Convert to HTML (pandoc)" then
-                    cmd = "pandoc '" .. file .. "' -o '" .. basename .. ".html'"
-                  elseif choice == "Convert to DOCX (pandoc)" then
-                    cmd = "pandoc '" .. file .. "' -o '" .. basename .. ".docx'"
-                  elseif choice == "Live preview in browser" then
-                    -- Start markdown preview server
-                    local port = "8080"
-                    vim.fn.jobstart("grip '" .. file .. "' " .. port .. " --browser", {
-                      detach = true,
-                      on_exit = function(_, code)
-                        if code == 0 then
-                          vim.notify(
-                            "✓ Live preview started at http://localhost:" .. port,
-                            vim.log.levels.INFO,
-                            { title = "Markdown" }
-                          )
-                        else
-                          vim.notify(
-                            "✗ Failed to start preview. Check terminal for errors.",
-                            vim.log.levels.ERROR,
-                            { title = "Markdown" }
-                          )
-                        end
-                      end,
-                    })
-                    return
-                  elseif choice == "PDF preview (auto-open)" then
-                    -- Convert to PDF and open automatically
-                    local pdf_file = basename .. "_preview.pdf"
-                    cmd = "pandoc '"
-                        .. file
-                        .. "' --pdf-engine=pdflatex --highlight-style=tango -V colorlinks=false -o '"
-                        .. pdf_file
-                        .. "' && xdg-open '"
-                        .. pdf_file
-                        .. "'"
-                  end
+								if choice == "Convert to PDF (LaTeX engine)" then
+									-- Use LaTeX engine with math support and Obsidian image conversion
+									local temp_file = basename .. "_temp.md"
+									cmd = "sed 's/!\\?\\[\\[\\([^|]*\\)|[0-9]*\\]\\]/![](\\1)/g' '"
+										.. file
+										.. "' | sed 's/%20/ /g' > '"
+										.. temp_file
+										.. "' && pandoc '"
+										.. temp_file
+										.. "' --pdf-engine=pdflatex -V geometry:margin=0.5in --highlight-style=tango -V colorlinks=false -o '"
+										.. basename
+										.. ".pdf' && rm '"
+										.. temp_file
+										.. "'"
+								elseif choice == "Convert to HTML (pandoc)" then
+									cmd = "pandoc '" .. file .. "' -o '" .. basename .. ".html'"
+								elseif choice == "Convert to DOCX (pandoc)" then
+									cmd = "pandoc '" .. file .. "' -o '" .. basename .. ".docx'"
+								elseif choice == "Live preview in browser" then
+									-- Start markdown preview server
+									local port = "8080"
+									vim.fn.jobstart("grip '" .. file .. "' " .. port .. " --browser", {
+										detach = true,
+										on_exit = function(_, code)
+											if code == 0 then
+												vim.notify(
+													"✓ Live preview started at http://localhost:" .. port,
+													vim.log.levels.INFO,
+													{ title = "Markdown" }
+												)
+											else
+												vim.notify(
+													"✗ Failed to start preview. Check terminal for errors.",
+													vim.log.levels.ERROR,
+													{ title = "Markdown" }
+												)
+											end
+										end,
+									})
+									return
+								elseif choice == "PDF preview (auto-open)" then
+									-- Convert to PDF and open automatically
+									local pdf_file = basename .. "_preview.pdf"
+									cmd = "pandoc '"
+										.. file
+										.. "' --pdf-engine=pdflatex --highlight-style=tango -V colorlinks=false -o '"
+										.. pdf_file
+										.. "' && xdg-open '"
+										.. pdf_file
+										.. "'"
+								end
 
-                  vim.fn.jobstart(cmd, {
-                    on_exit = function(_, code)
-                      if code == 0 then
-                        vim.notify(
-                          "✓ " .. choice .. " completed successfully",
-                          vim.log.levels.INFO,
-                          { title = "Markdown" }
-                        )
-                      else
-                        vim.notify(
-                          "✗ " .. choice .. " failed. Make sure you have the required tools installed (pandoc/glow).",
-                          vim.log.levels.ERROR,
-                          { title = "Markdown" }
-                        )
-                      end
-                    end,
-                    on_stderr = function(_, data)
-                      if data and #data > 0 and data[1] ~= "" then
-                        vim.notify("Error: " .. table.concat(data, "\n"), vim.log.levels.ERROR, { title = "Markdown" })
-                      end
-                    end,
-                  })
-                end)
-                return true
-              end,
-            })
-            :find()
-      end,
-      "Markdown convert options",
-    },
-  },
+								vim.fn.jobstart(cmd, {
+									on_exit = function(_, code)
+										if code == 0 then
+											vim.notify(
+												"✓ " .. choice .. " completed successfully",
+												vim.log.levels.INFO,
+												{ title = "Markdown" }
+											)
+										else
+											vim.notify(
+												"✗ "
+													.. choice
+													.. " failed. Make sure you have the required tools installed (pandoc/glow).",
+												vim.log.levels.ERROR,
+												{ title = "Markdown" }
+											)
+										end
+									end,
+									on_stderr = function(_, data)
+										if data and #data > 0 and data[1] ~= "" then
+											vim.notify(
+												"Error: " .. table.concat(data, "\n"),
+												vim.log.levels.ERROR,
+												{ title = "Markdown" }
+											)
+										end
+									end,
+								})
+							end)
+							return true
+						end,
+					})
+					:find()
+			end,
+			"Markdown convert options",
+		},
+	},
 }
 
 M.nvterm = {
-  plugin = true,
+	plugin = true,
 
-  t = {
-    -- toggle in terminal mode
-    ["<A-i>"] = {
-      function()
-        require("nvterm.terminal").toggle "float"
-      end,
-      "Toggle floating term",
-    },
+	t = {
+		-- toggle in terminal mode
+		["<A-i>"] = {
+			function()
+				require("nvterm.terminal").toggle("float")
+			end,
+			"Toggle floating term",
+		},
 
-    ["<A-h>"] = {
-      function()
-        require("nvterm.terminal").toggle "horizontal"
-      end,
-      "Toggle horizontal term",
-    },
+		["<A-h>"] = {
+			function()
+				require("nvterm.terminal").toggle("horizontal")
+			end,
+			"Toggle horizontal term",
+		},
 
-    ["<A-v>"] = {
-      function()
-        require("nvterm.terminal").toggle "vertical"
-      end,
-      "Toggle vertical term",
-    },
-  },
+		["<A-v>"] = {
+			function()
+				require("nvterm.terminal").toggle("vertical")
+			end,
+			"Toggle vertical term",
+		},
+	},
 
-  n = {
-    -- toggle in normal mode
-    ["<A-i>"] = {
-      function()
-        require("nvterm.terminal").toggle "float"
-      end,
-      "Toggle floating term",
-    },
+	n = {
+		-- toggle in normal mode
+		["<A-i>"] = {
+			function()
+				require("nvterm.terminal").toggle("float")
+			end,
+			"Toggle floating term",
+		},
 
-    ["<A-h>"] = {
-      function()
-        require("nvterm.terminal").toggle "horizontal"
-      end,
-      "Toggle horizontal term",
-    },
+		["<A-h>"] = {
+			function()
+				require("nvterm.terminal").toggle("horizontal")
+			end,
+			"Toggle horizontal term",
+		},
 
-    ["<A-v>"] = {
-      function()
-        require("nvterm.terminal").toggle "vertical"
-      end,
-      "Toggle vertical term",
-    },
+		["<A-v>"] = {
+			function()
+				require("nvterm.terminal").toggle("vertical")
+			end,
+			"Toggle vertical term",
+		},
 
-    -- new
-    ["<leader>h"] = {
-      function()
-        require("nvterm.terminal").new "horizontal"
-      end,
-      "New horizontal term",
-    },
+		-- new
+		["<leader>h"] = {
+			function()
+				require("nvterm.terminal").new("horizontal")
+			end,
+			"New horizontal term",
+		},
 
-    ["<leader>v"] = {
-      function()
-        require("nvterm.terminal").new "vertical"
-      end,
-      "New vertical term",
-    },
-  },
+		["<leader>v"] = {
+			function()
+				require("nvterm.terminal").new("vertical")
+			end,
+			"New vertical term",
+		},
+	},
 }
 
 M.whichkey = {
-  plugin = true,
+	plugin = true,
 
-  n = {
-    ["<leader>wK"] = {
-      function()
-        vim.cmd "WhichKey"
-      end,
-      "Which-key all keymaps",
-    },
-    ["<leader>wk"] = {
-      function()
-        local input = vim.fn.input "WhichKey: "
-        vim.cmd("WhichKey " .. input)
-      end,
-      "Which-key query lookup",
-    },
-  },
+	n = {
+		["<leader>wK"] = {
+			function()
+				vim.cmd("WhichKey")
+			end,
+			"Which-key all keymaps",
+		},
+		["<leader>wk"] = {
+			function()
+				local input = vim.fn.input("WhichKey: ")
+				vim.cmd("WhichKey " .. input)
+			end,
+			"Which-key query lookup",
+		},
+	},
 }
 
 M.blankline = {
-  plugin = true,
+	plugin = true,
 
-  n = {
-    ["<leader>cc"] = {
-      function()
-        local ok, start = require("indent_blankline.utils").get_current_context(
-          vim.g.indent_blankline_context_patterns,
-          vim.g.indent_blankline_use_treesitter_scope
-        )
+	n = {
+		["<leader>cc"] = {
+			function()
+				local ok, start = require("indent_blankline.utils").get_current_context(
+					vim.g.indent_blankline_context_patterns,
+					vim.g.indent_blankline_use_treesitter_scope
+				)
 
-        if ok then
-          vim.api.nvim_win_set_cursor(vim.api.nvim_get_current_win(), { start, 0 })
-          vim.cmd [[normal! _]]
-        end
-      end,
+				if ok then
+					vim.api.nvim_win_set_cursor(vim.api.nvim_get_current_win(), { start, 0 })
+					vim.cmd([[normal! _]])
+				end
+			end,
 
-      "Jump to current context",
-    },
-  },
+			"Jump to current context",
+		},
+	},
 }
 
 M.gitsigns = {
-  plugin = true,
+	plugin = true,
 
-  n = {
-    -- Navigation through hunks
-    ["]c"] = {
-      function()
-        if vim.wo.diff then
-          return "]c"
-        end
-        vim.schedule(function()
-          require("gitsigns").next_hunk()
-        end)
-        return "<Ignore>"
-      end,
-      "Jump to next hunk",
-      opts = { expr = true },
-    },
+	n = {
+		-- Navigation through hunks
+		["]c"] = {
+			function()
+				if vim.wo.diff then
+					return "]c"
+				end
+				vim.schedule(function()
+					require("gitsigns").next_hunk()
+				end)
+				return "<Ignore>"
+			end,
+			"Jump to next hunk",
+			opts = { expr = true },
+		},
 
-    ["[c"] = {
-      function()
-        if vim.wo.diff then
-          return "[c"
-        end
-        vim.schedule(function()
-          require("gitsigns").prev_hunk()
-        end)
-        return "<Ignore>"
-      end,
-      "Jump to prev hunk",
-      opts = { expr = true },
-    },
+		["[c"] = {
+			function()
+				if vim.wo.diff then
+					return "[c"
+				end
+				vim.schedule(function()
+					require("gitsigns").prev_hunk()
+				end)
+				return "<Ignore>"
+			end,
+			"Jump to prev hunk",
+			opts = { expr = true },
+		},
 
-    -- Actions
-    ["<leader>rh"] = {
-      function()
-        require("gitsigns").reset_hunk()
-      end,
-      "Reset hunk",
-    },
+		-- Actions
+		["<leader>rh"] = {
+			function()
+				require("gitsigns").reset_hunk()
+			end,
+			"Reset hunk",
+		},
 
-    ["<leader>ph"] = {
-      function()
-        require("gitsigns").preview_hunk()
-      end,
-      "Preview hunk",
-    },
+		["<leader>ph"] = {
+			function()
+				require("gitsigns").preview_hunk()
+			end,
+			"Preview hunk",
+		},
 
-    ["<leader>gb"] = {
-      function()
-        package.loaded.gitsigns.blame_line()
-      end,
-      "Blame line",
-    },
+		["<leader>gb"] = {
+			function()
+				package.loaded.gitsigns.blame_line()
+			end,
+			"Blame line",
+		},
 
-    ["<leader>td"] = {
-      function()
-        require("gitsigns").toggle_deleted()
-      end,
-      "Toggle deleted",
-    },
-  },
+		["<leader>td"] = {
+			function()
+				require("gitsigns").toggle_deleted()
+			end,
+			"Toggle deleted",
+		},
+	},
 }
 
 return M

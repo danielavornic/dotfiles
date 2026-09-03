@@ -1,8 +1,10 @@
-font-family = "VictorMono Nerd Font"
-font-size = 20.0
+font-family = "IosevkaTerm Nerd Font Mono"
+# font-family = "VictorMono Nerd Font"
+font-size = 30.0
 
 window-decoration = false
 window-inherit-font-size = false
 window-padding-y = 0
 
-theme = Kanagawabones
+# theme = Kanagawa Wave
+theme = TokyoNight
