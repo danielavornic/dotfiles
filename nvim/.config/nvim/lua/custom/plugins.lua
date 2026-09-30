@@ -2,6 +2,7 @@ local plugins = {
 	{ "nvim-mini/mini.nvim", version = false },
 	{
 		"nvim-treesitter/nvim-treesitter",
+		branch = "master",
 		build = function()
 			vim.cmd("TSUpdate")
 			local path = vim.fn.stdpath("data") .. "/lazy/nvim-treesitter/lua/nvim-treesitter/query_predicates.lua"

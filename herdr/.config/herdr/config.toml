@@ -1,15 +1,18 @@
 onboarding = false
 
 [theme]
-name = "tokyo-night"
+name = "kanagawa"
 auto_switch = false
 
 [ui]
+host_cursor = "native"
 show_agent_labels_on_pane_borders = true
 
 agent_panel_sort = "priority"
+status_indicators = "dots"
+
 [experimental]
-pane_history = false
+pane_history = true
 
 [keys]
 prefix = "ctrl+b"
@@ -17,7 +20,7 @@ reload_config = "prefix+r"
 resize_mode = "prefix+shift+r"
 close_pane = "prefix+q"
 detach = "prefix+d"
-previous_workspace = "prefix+shift+l"
+previous_workspace = "prefix+ctrl+p"
 next_workspace = "prefix+ctrl+n"
 last_pane = "prefix+tab"
 open_worktree = "prefix+shift+o"
@@ -53,3 +56,9 @@ command = "herdr plugin action invoke open-file-viewer-tab --plugin herdr-file-v
 key = "cmd+r"
 type = "plugin_action"
 command = "persiyanov.reviewr.toggle"   # <plugin_id>.<action_id> — note the id, not the name
+
+[[keys.command]]
+key = "prefix+shift+l"
+type = "plugin_action"
+command = "third774.last-workspace.toggle"
+description = "last workspace"

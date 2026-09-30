@@ -1,39 +1,75 @@
+-- Vaults differ per machine. Each vault lists the paths it can live at; the first
+-- one that exists locally is used, and vaults with none are skipped, because
+-- obsidian.nvim errors on a workspace path that isn't on disk.
+-- A path can be { path, overrides = {...} } for settings that only apply at that location.
+local vaults = {
+  {
+    name = "personal",
+    paths = {
+      {
+        "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/DanaGardens",
+        overrides = {
+          daily_notes = {
+            folder = "10-PERSONAL/daily",
+            date_format = "%d-%m-%Y",
+            alias_format = "%-d %B,  %Y",
+            default_tags = { "dpn" },
+            -- Relative to templates.folder.
+            template = "DAILY-Template.md",
+          },
+        },
+      },
+      "~/obsidian",
+    },
+  },
+  {
+    name = "railpen",
+    paths = { "~/lowcode-accelerator" },
+    overrides = {
+      attachments = { img_folder = "Obsidian attachments" },
+      templates = { folder = vim.NIL },
+    },
+  },
+}
+
+local workspaces = {}
+for _, vault in ipairs(vaults) do
+  for _, entry in ipairs(vault.paths) do
+    local path = type(entry) == "table" and entry[1] or entry
+    if vim.fn.isdirectory(vim.fn.expand(path)) == 1 then
+      local overrides = vim.tbl_deep_extend("force", vault.overrides or {}, type(entry) == "table" and entry.overrides or {})
+      table.insert(workspaces, { name = vault.name, path = path, overrides = overrides })
+      break
+    end
+  end
+end
+
 return {
   "epwalsh/obsidian.nvim",
   version = "*", -- recommended, use latest release instead of latest commit
   lazy = true,
   ft = "markdown",
-
-  -- Replace the above line with this if you only want to load obsidian.nvim for markdown files in your vault:
-  -- event = {
-  --   -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand'.
-  --   -- E.g. "BufReadPre " .. vim.fn.expand "~" .. "/my-vault/*.md"
-  --   -- refer to `:h file-pattern` for more examples
-  --   "BufReadPre path/to/my-vault/*.md",
-  --   "BufNewFile path/to/my-vault/*.md",
-  -- },
+  -- Skip the plugin on machines without any vault.
+  cond = #workspaces > 0,
   dependencies = {
     -- Required.
     "nvim-lua/plenary.nvim",
   },
   opts = {
     ui = { enable = false },
-    attachments = {
-      -- The default folder to place images in via `:ObsidianPasteImg`.
-      -- If this is a relative path it will be interpreted as relative to the vault root.
-      -- You can always override this per image by passing a full path to the command instead of just a filename.
-      img_folder = "_SYSTEM/_attachments", -- This is the default
+    workspaces = workspaces,
 
-      -- Optional, customize the default name or prefix when pasting images via `:ObsidianPasteImg`.
+    -- Defaults below match the personal vault layout. Vaults that differ override them above.
+    attachments = {
+      -- The default folder to place images in via `:ObsidianPasteImg`, relative to the vault root.
+      img_folder = "_SYSTEM/_attachments",
+
+      -- Prefix image names with timestamp.
       ---@return string
       img_name_func = function()
-        -- Prefix image names with timestamp.
         return string.format("%s-", os.time())
       end,
 
-      -- A function that determines the text to insert in the note when pasting an image.
-      -- It takes two arguments, the `obsidian.Client` and an `obsidian.Path` to the image file.
-      -- This is the default implementation.
       ---@param client obsidian.Client
       ---@param path obsidian.Path the absolute path to the image file
       ---@return string
@@ -42,51 +78,23 @@ return {
         return string.format("![%s](%s)", path.name, path)
       end,
     },
-    workspaces = {
-      {
-        name = "personal",
-        path = "~/Library/Mobile Documents/iCloud~md~obsidian/Documents/DanaGardens",
-      },
-    },
     notes_subdir = "00-INBOX",
     new_notes_location = "00-INBOX",
 
     disable_frontmatter = true,
     templates = {
-      subdir = "_SYSTEM/_templates",
+      folder = "_SYSTEM/_templates",
       date_format = "%d-%m-%Y",
       time_format = "%H:%M:%S",
     },
-    -- Optional, by default when you use `:ObsidianFollowLink` on a link to an external
-    -- URL it will be ignored but you can customize this behavior here.
     ---@param url string
     follow_url_func = function(url)
-      -- Open the URL in the default web browser.
-      -- vim.fn.jobstart({"open", url})  -- Mac OS
-      -- vim.fn.jobstart({"xdg-open", url})  -- linux
-      -- vim.cmd(':silent exec "!start ' .. url .. '"') -- Windows
       vim.ui.open(url) -- need Neovim 0.10.0+
     end,
 
-    -- Optional, by default when you use `:ObsidianFollowLink` on a link to an image
-    -- file it will be ignored but you can customize this behavior here.
     ---@param img string
     follow_img_func = function(img)
-      -- vim.fn.jobstart { "qlmanage", "-p", img } -- Mac OS quick look preview
-      vim.fn.jobstart { "xdg-open", img } -- linux
-      -- vim.cmd(':silent exec "!start ' .. url .. '"') -- Windows
+      vim.ui.open(img)
     end,
-    daily_notes = {
-      -- Optional, if you keep daily notes in a separate directory.
-      folder = "10-PERSONAL/daily",
-      -- Optional, if you want to change the date format for the ID of daily notes.
-      date_format = "%d-%m-%Y",
-      -- Optional, if you want to change the date format of the default alias of daily notes.
-      alias_format = "%-d %B,  %Y",
-      -- Optional, default tags to add to each new daily note created.
-      default_tags = { "dpn" },
-      -- Optional, if you want to automatically insert a template from your template directory like 'daily.md'
-      template = "_SYSTEM/_templates/DAILY-Template.md",
-    },
   },
 }

@@ -1,7 +1,7 @@
 ---@type ChadrcConfig
 local M = {}
 M.ui = {
-  theme = "tokyonight",
+  theme = "kanagawa",
   tabufline = { enabled = false },
   nvdash = { load_on_startup = false },
   statusline = {
