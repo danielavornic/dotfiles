@@ -81,29 +81,31 @@ pish() {
   local type=$1
   local source=$2
 
+  local types="Types: m (music), ab (audiobook), mv (movie), tv (show)"
+
   if [[ -z "$type" ]] || [[ -z "$source" ]]; then
     echo "Usage: pish <type> <source>"
-    echo "Types: ab (audiobook), m (music)"
+    echo "$types"
     return 1
   fi
 
-  local rp_host="rp@rp.local"
-  local rp_base="/media/rp/E269-F024/media"
-  local rp_jellyfin="/media/rp/E269-F024/jellyfin/media"
+  local rp_host="rp@100.107.195.89"
+  local rp_base="/srv/media"
+  local dest
 
   case $type in
-    ab|audiobook)
-      rsync -av "$source" "$rp_host:$rp_base/audiobookshelf/audiobooks/"
-      ;;
-    m|music)
-      rsync -av "$source" "$rp_host:$rp_base/music/"
-      ;;
+    m|music)        dest=music ;;
+    ab|audiobook)   dest=audiobooks ;;
+    mv|movie)       dest=movies ;;
+    tv|show)        dest=shows ;;
     *)
       echo "Unknown type: $type"
-      echo "Types: ab (audiobook), m (music)"
+      echo "$types"
       return 1
       ;;
   esac
+
+  rsync -rtv "$source" "$rp_host:$rp_base/$dest/"
 }
 
  export VISUAL=/opt/homebrew/bin/nvim
