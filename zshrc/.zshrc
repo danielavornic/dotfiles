@@ -78,35 +78,14 @@ unset __conda_setup
 
 
 pish() {
-  local type=$1
-  local source=$2
-
-  local types="Types: m (music), ab (audiobook), mv (movie), tv (show)"
-
-  if [[ -z "$type" ]] || [[ -z "$source" ]]; then
-    echo "Usage: pish <type> <source>"
-    echo "$types"
-    return 1
-  fi
-
-  local rp_host="rp@100.107.195.89"
-  local rp_base="/srv/media"
-  local dest
-
-  case $type in
-    m|music)        dest=music ;;
-    ab|audiobook)   dest=audiobooks ;;
-    mv|movie)       dest=movies ;;
-    tv|show)        dest=shows ;;
-    *)
-      echo "Unknown type: $type"
-      echo "$types"
-      return 1
-      ;;
-  esac
-
-  rsync -rtv "$source" "$rp_host:$rp_base/$dest/"
+  ~/.bun/bin/bun ~/Projects/pish/src/cli.ts "$@"
 }
 
  export VISUAL=/opt/homebrew/bin/nvim
    export EDITOR=/opt/homebrew/bin/nvim
+
+# herdr-automatic-rename: live tab naming hook
+for _f in $HOME/.config/herdr/plugins/github-installations/herdr-automatic-rename-*/*/checkout/shell/hook.zsh(N) \
+          $HOME/.config/herdr/plugins/github/herdr-automatic-rename-*/shell/hook.zsh(N); do
+  source $_f; break
+done
