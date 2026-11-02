@@ -108,3 +108,26 @@ pish() {
 
  export VISUAL=/opt/homebrew/bin/nvim
    export EDITOR=/opt/homebrew/bin/nvim
+
+# Dev containers for the current folder: dc-up, dc-run claude, dc-sh, dc-down, ...
+source "$HOME/dotfiles/zshrc/devcontainer.zsh"
+
+# Railpen harness: the dc-* functions pinned to harness-agent, from any folder
+export RAILPEN_HA="$HOME/railpen_dev1/harness-agent"
+alias rp-up='DC_WORKSPACE=$RAILPEN_HA dc-up'
+alias rp-claude='DC_WORKSPACE=$RAILPEN_HA dc-exec claude'
+alias rp-sh='DC_WORKSPACE=$RAILPEN_HA dc-sh'
+alias rp-rebuild='DC_WORKSPACE=$RAILPEN_HA dc-rebuild'
+alias rp-down='DC_WORKSPACE=$RAILPEN_HA dc-down'
+alias rp-forward='DC_WORKSPACE=$RAILPEN_HA dc-forward'
+# Credential proxy (rp-up starts it; reload after editing ~/.config/railpen/cred-proxy.env)
+alias rp-proxy-reload='docker compose -f "$RAILPEN_HA/proxy/compose.yaml" up --detach --force-recreate --wait'
+alias rp-proxy-status='docker ps --filter name=railpen-cred-proxy --format "{{.Names}} {{.Status}}"'
+alias rp-proxy-logs='docker logs --tail 50 -f railpen-cred-proxy'
+export RAILPEN_KB_PATH="/mnt/c/Users/DanVor/OneDrive - Softwire Technology Limited/Consulting - Low Code Citizen Developer Accelerator Programme"
+[[ -r ~/.config/railpen/secrets.env ]] && source ~/.config/railpen/secrets.env   # RAILPEN_GITLAB_TOKEN
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+
+# Added by the Hunk installer (https://hunk.dev)
+export PATH='/home/danvor/.hunk/bin':"$PATH"
