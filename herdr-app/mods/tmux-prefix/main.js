@@ -51,6 +51,9 @@ const BINDINGS = [
   // Git: lazygit in the focused terminal's folder, on the space's machine
   ["g", "Lazygit (new tab)", "terminal.open", { argv: ["lazygit"], name: "lazygit" }],
   ["ctrl+g", "Lazygit (split right)", "terminal.open", { argv: ["lazygit"], place: "right" }],
+  // Side panel toggles (panel-keys mod, also Ctrl+Shift+G for Changes)
+  ["C", "Toggle Changes", "panel-keys.changes"],
+  ["f", "Toggle Files", "panel-keys.files"],
   // Tabs
   ["c", "New tab", "tab.new"],
   ["n", "Next tab", "tab.next"],
@@ -65,7 +68,7 @@ const BINDINGS = [
   ["z", "Zoom pane", "pane.zoom"],
   ["h", "Focus left", "pane.go", { direction: "left" }, true],
   ["j", "Focus down", "pane.go", { direction: "down" }, true],
-  ["k", "Focus up", "pane.go", { direction: "up" }, true],
+  ["k", "Search spaces, panes, agents", "mod.open", { name: "picker" }], // Focus up: prefix + up arrow
   ["l", "Focus right", "pane.go", { direction: "right" }, true],
   ["H", "Swap left", "pane.swap", { direction: "left" }, true],
   ["J", "Swap down", "pane.swap", { direction: "down" }, true],
