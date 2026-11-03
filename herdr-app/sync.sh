@@ -144,13 +144,13 @@ patch_view_switch() {
   done
 }
 
-# Folder / VS Code buttons in the status bar for WSL spaces too (upstream: this computer only).
-# patches/wsl-folder.pl edits herdr-zoo's mods/my-status/main.js; exit 2 means it changed it.
-patch_wsl_folder() {
+# Status bar git (branch, Sync, PR, switch) on remote spaces, and Folder / VS Code for WSL ones
+# (upstream: this computer only). patches/my-status-remote.pl edits herdr-zoo's mods/my-status/main.js; exit 2 means it changed it.
+patch_my_status_remote() {
   f="$app/mods/my-status/main.js"
   [ -f "$f" ] || return 0
   rc=0
-  perl "$here/patches/wsl-folder.pl" "$f" || rc=$?
+  perl "$here/patches/my-status-remote.pl" "$f" || rc=$?
   [ "$rc" = 2 ] && check_mod my-status
   [ "$rc" = 0 ] || [ "$rc" = 2 ]
 }
@@ -180,7 +180,7 @@ case "${1:-}" in
     patch_tab_index
     patch_zoo_narrow
     patch_view_switch
-    patch_wsl_folder
+    patch_my_status_remote
     echo "pushed to $app"
     ;;
   zoo)
