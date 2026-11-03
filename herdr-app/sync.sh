@@ -144,6 +144,17 @@ patch_view_switch() {
   done
 }
 
+# Folder / VS Code buttons in the status bar for WSL spaces too (upstream: this computer only).
+# patches/wsl-folder.pl edits herdr-zoo's mods/my-status/main.js; exit 2 means it changed it.
+patch_wsl_folder() {
+  f="$app/mods/my-status/main.js"
+  [ -f "$f" ] || return 0
+  rc=0
+  perl "$here/patches/wsl-folder.pl" "$f" || rc=$?
+  [ "$rc" = 2 ] && check_mod my-status
+  [ "$rc" = 0 ] || [ "$rc" = 2 ]
+}
+
 # ---- Commands -------------------------------------------------------------------------
 
 case "${1:-}" in
@@ -169,6 +180,7 @@ case "${1:-}" in
     patch_tab_index
     patch_zoo_narrow
     patch_view_switch
+    patch_wsl_folder
     echo "pushed to $app"
     ;;
   zoo)
