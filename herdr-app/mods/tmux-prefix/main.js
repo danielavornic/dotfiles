@@ -54,6 +54,8 @@ const BINDINGS = [
   // Side panel toggles (panel-keys mod, also Ctrl+Shift+G for Changes)
   ["C", "Toggle Changes", "panel-keys.changes"],
   ["f", "Toggle Files", "panel-keys.files"],
+  // Agents (panel-keys mod, also Ctrl+Shift+A)
+  ["a", "Go to agent alert", "panel-keys.alert"],
   // Tabs
   ["c", "New tab", "tab.new"],
   ["n", "Next tab", "tab.next"],

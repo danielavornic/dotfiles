@@ -58,6 +58,7 @@
     "ctrl-shift-l": "layout.switch",
     "ctrl-shift-j": "claude-chat.toggle",
     "ctrl-shift-g": "panel-keys.changes",
+    "ctrl-shift-a": "panel-keys.alert",
     "f2": "tab.rename",
     "shift-f2": "space.rename",
     "ctrl-b": "mod.open:tmux-prefix"
