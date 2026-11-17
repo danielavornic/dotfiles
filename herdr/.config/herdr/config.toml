@@ -7,6 +7,7 @@ auto_switch = false
 [ui]
 host_cursor = "native"
 show_agent_labels_on_pane_borders = true
+prompt_new_tab_name = false
 
 agent_panel_sort = "priority"
 status_indicators = "dots"
@@ -62,3 +63,9 @@ key = "prefix+shift+l"
 type = "plugin_action"
 command = "third774.last-workspace.toggle"
 description = "last workspace"
+
+[[keys.command]]
+key = "prefix+k"
+type = "plugin_action"
+command = "herdr-bar.open"
+description = "command bar"

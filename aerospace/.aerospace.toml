@@ -56,21 +56,10 @@ on-mode-changed = []
 # if.app-id = "com.apple.finder"
 # run = 'layout floating'
 
+## Floating windows
 [[on-window-detected]]
 if.app-name-regex-substring = 'camera'
 run = 'layout floating'
-
-[[on-window-detected]]
-if.app-id = 'com.apple.Music'
-run = 'layout floating'
-
-[[on-window-detected]]
-if.app-id = 'ru.keepcoder.Telegram'
-run = 'move-node-to-workspace 4'
-
-[[on-window-detected]]
-if.app-id = 'com.hnc.Discord'
-run = 'move-node-to-workspace 4'
 
 [[on-window-detected]]
 if.app-id = 'com.apple.Preview'
@@ -80,22 +69,7 @@ run = 'layout floating'
 if.app-id = 'com.apple.Stickies'
 run = 'layout floating'
 
-[[on-window-detected]]
-if.app-id = 'fm.last.batch-scrobbler'
-run = 'layout floating'
-
-[[on-window-detected]]
-if.app-id = 'coing.ClockifyDesktop'
-run = 'move-node-to-workspace 7'
-
-[[on-window-detected]]
-if.app-id = 'com.linear'
-run = 'move-node-to-workspace 7'
-
-[[on-window-detected]]
-if.app-id = 'net.whatsapp.WhatsApp'
-run = 'move-node-to-workspace 4'
-
+# Workspace 1: Browser
 [[on-window-detected]]
 if.app-id = 'net.imput.helium'
 run = 'move-node-to-workspace 1'
@@ -103,6 +77,33 @@ run = 'move-node-to-workspace 1'
 [[on-window-detected]]
 if.app-id = 'app.zen-browser.zen'
 run = 'move-node-to-workspace 1'
+
+# Workspace 2: Development
+[[on-window-detected]]
+if.app-id = 'com.ghostty.ghostty'
+run = 'move-node-to-workspace 2'
+ 
+# Workspace 3: Communication
+[[on-window-detected]]
+if.app-id = 'net.whatsapp.WhatsApp'
+run = 'move-node-to-workspace 3'
+
+[[on-window-detected]]
+if.app-id = 'ru.keepcoder.Telegram'
+run = 'move-node-to-workspace 3'
+
+[[on-window-detected]]
+if.app-id = 'com.hnc.Discord'
+run = 'move-node-to-workspace 3'
+
+# Workspace 7: Productivity
+[[on-window-detected]]
+if.app-id = 'coing.ClockifyDesktop'
+run = 'move-node-to-workspace 7'
+
+[[on-window-detected]]
+if.app-id = 'com.linear'
+run = 'move-node-to-workspace 7'
 
 # Possible values: (qwerty|dvorak|colemak)
 # See https://nikitabobko.github.io/AeroSpace/guide#key-mapping

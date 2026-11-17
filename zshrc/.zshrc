@@ -78,32 +78,7 @@ unset __conda_setup
 
 
 pish() {
-  local type=$1
-  local source=$2
-
-  if [[ -z "$type" ]] || [[ -z "$source" ]]; then
-    echo "Usage: pish <type> <source>"
-    echo "Types: ab (audiobook), m (music)"
-    return 1
-  fi
-
-  local rp_host="rp@rp.local"
-  local rp_base="/media/rp/E269-F024/media"
-  local rp_jellyfin="/media/rp/E269-F024/jellyfin/media"
-
-  case $type in
-    ab|audiobook)
-      rsync -av "$source" "$rp_host:$rp_base/audiobookshelf/audiobooks/"
-      ;;
-    m|music)
-      rsync -av "$source" "$rp_host:$rp_base/music/"
-      ;;
-    *)
-      echo "Unknown type: $type"
-      echo "Types: ab (audiobook), m (music)"
-      return 1
-      ;;
-  esac
+  ~/.bun/bin/bun ~/Projects/pish/src/cli.ts "$@"
 }
 
  export VISUAL=/opt/homebrew/bin/nvim
@@ -131,3 +106,8 @@ eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 
 # Added by the Hunk installer (https://hunk.dev)
 export PATH='/home/danvor/.hunk/bin':"$PATH"
+# herdr-automatic-rename: live tab naming hook
+for _f in $HOME/.config/herdr/plugins/github-installations/herdr-automatic-rename-*/*/checkout/shell/hook.zsh(N) \
+          $HOME/.config/herdr/plugins/github/herdr-automatic-rename-*/shell/hook.zsh(N); do
+  source $_f; break
+done
