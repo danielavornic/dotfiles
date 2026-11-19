@@ -1,3 +1,10 @@
+# .NET SDK and global tools (Power Platform CLI)
+if [[ -d "$HOME/.dotnet" ]]; then
+  export DOTNET_ROOT="$HOME/.dotnet"
+  export PATH="$HOME/.dotnet:$HOME/.dotnet/tools:$PATH"
+  export DOTNET_CLI_TELEMETRY_OPTOUT=1
+fi
+
 export PATH="$HOME/.local/bin:$PATH"
 
 export ZSH="$HOME/.oh-my-zsh"
@@ -54,7 +61,11 @@ alias telegram='~/Downloads/Telegram/Telegram'
 
 
 # pnpm
-export PNPM_HOME="/Users/danielavornic/Library/pnpm"
+if [[ "$OSTYPE" == darwin* ]]; then
+  export PNPM_HOME="$HOME/Library/pnpm"
+else
+  export PNPM_HOME="$HOME/.local/share/pnpm"
+fi
 case ":$PATH:" in
   *":$PNPM_HOME:"*) ;;
   *) export PATH="$PNPM_HOME:$PATH" ;;
