@@ -110,11 +110,11 @@ alias rp-proxy-status='docker ps --filter name=railpen-cred-proxy --format "{{.N
 alias rp-proxy-logs='docker logs --tail 50 -f railpen-cred-proxy'
 export RAILPEN_KB_PATH="/mnt/c/Users/DanVor/OneDrive - Softwire Technology Limited/Consulting - Low Code Citizen Developer Accelerator Programme"
 [[ -r ~/.config/railpen/secrets.env ]] && source ~/.config/railpen/secrets.env   # RAILPEN_GITLAB_TOKEN
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-
-# Added by the Hunk installer (https://hunk.dev)
-export PATH='/home/danvor/.hunk/bin':"$PATH"
+# Linux-only: Homebrew (linuxbrew) and Hunk (https://hunk.dev)
+if [[ "$OSTYPE" == linux* ]]; then
+  [[ -x /home/linuxbrew/.linuxbrew/bin/brew ]] && eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+  export PATH="$HOME/.hunk/bin:$PATH"
+fi
 # herdr-automatic-rename: live tab naming hook
 for _f in $HOME/.config/herdr/plugins/github-installations/herdr-automatic-rename-*/*/checkout/shell/hook.zsh(N) \
           $HOME/.config/herdr/plugins/github/herdr-automatic-rename-*/shell/hook.zsh(N); do
