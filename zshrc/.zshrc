@@ -36,8 +36,6 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 
 alias tt='timetrace'
 
-eval "$(zoxide init zsh)"
-alias cd='z'
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
@@ -122,3 +120,7 @@ for _f in $HOME/.config/herdr/plugins/github-installations/herdr-automatic-renam
           $HOME/.config/herdr/plugins/github/herdr-automatic-rename-*/shell/hook.zsh(N); do
   source $_f; break
 done
+
+# zoxide must be initialised last (its doctor checks this)
+eval "$(zoxide init zsh)"
+alias cd='z'
